@@ -110,7 +110,7 @@ class PreprocessingEngine:
             'wavelet': Umbral wavelet (más agresivo)
         """
         if method == "savgol":
-            window = kwargs.get('window', min(51, len(intensities)//2*2+1))
+           window = kwargs.get('window', min(51, max(5, len(intensities)//10*2+1)))
             polyorder = kwargs.get('polyorder', 3)
             if window > polyorder:
                 cleaned = savgol_filter(intensities, window, polyorder)
@@ -358,7 +358,7 @@ class PreprocessingEngine:
 
             # Feedback: ajustar parámetros para siguiente iteración
             if not quality['snr_pass']:
-                clean_params['window'] = min(clean_params['window'] + 20, len(intensities)//2*2+1)
+            clean_params['window'] = min(clean_params['window'] + 20, max(5, len(intensities)//10*2+1))
 
             if not quality['baseline_pass']:
                 norm_params['degree'] = min(norm_params['degree'] + 1, 5)
