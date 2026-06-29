@@ -63,8 +63,27 @@ class ScientificReport:
     # Recomendaciones
     recommendations: List[str] = field(default_factory=list)
 
+        def _convert_to_native(self, obj):
+        """Convierte numpy types a tipos nativos de Python para JSON."""
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+
+        if isinstance(obj, np.generic):
+            return obj.item()
+
+        if isinstance(obj, dict):
+            return {str(k): self._convert_to_native(v) for k, v in obj.items()}
+
+        if isinstance(obj, list):
+            return [self._convert_to_native(v) for v in obj]
+
+        if isinstance(obj, tuple):
+            return [self._convert_to_native(v) for v in obj]
+
+        return obj
+
     def to_dict(self) -> dict:
-        return {
+        result = {
             'sample_id': self.sample_id,
             'timestamp': self.timestamp,
             'best_match': self.best_match.to_dict() if self.best_match else None,
@@ -78,6 +97,7 @@ class ScientificReport:
             'instrument_metadata': self.instrument_metadata,
             'recommendations': self.recommendations
         }
+        return self._convert_to_native(result)
 
     def to_json(self, indent: int = 2) -> str:
         return json.dumps(self.to_dict(), indent=indent, default=str)
