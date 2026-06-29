@@ -369,20 +369,20 @@ class PreprocessingEngine:
             )
             result.quality_flags = quality
 
-                if quality['overall_pass']:
+            if quality['overall_pass']:
                 break
 
-            # Feedback: ajustar parámetros para siguiente iteración
-            if not quality['snr_pass']:
-                clean_params['window'] = min(clean_params['window'] + 20, max(5, len(intensities)//10*2+1))
+        # Feedback: ajustar parámetros para siguiente iteración
+        if not quality['snr_pass']:
+            clean_params['window'] = min(clean_params['window'] + 20, max(5, len(intensities)//10*2+1))
 
-            if not quality['baseline_pass']:
-                norm_params['degree'] = min(norm_params['degree'] + 1, 5)
+        if not quality['baseline_pass']:
+            norm_params['degree'] = min(norm_params['degree'] + 1, 5)
 
-            if not quality['peaks_pass']:
-                clean_params['window'] = max(clean_params['window'] - 10, 11)
+        if not quality['peaks_pass']:
+            clean_params['window'] = max(clean_params['window'] - 10, 11)
 
-            if not quality['saturation_pass']:
-                norm_method = "vector"
+        if not quality['saturation_pass']:
+            norm_method = "vector"
 
         return result
