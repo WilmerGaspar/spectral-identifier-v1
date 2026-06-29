@@ -110,12 +110,28 @@ class PreprocessingEngine:
             'wavelet': Umbral wavelet (más agresivo)
         """
         if method == "savgol":
-           window = kwargs.get('window', min(51, max(5, len(intensities)//10*2+1)))
-            polyorder = kwargs.get('polyorder', 3)
-            if window > polyorder:
-                cleaned = savgol_filter(intensities, window, polyorder)
-            else:
+            n = len(intensities)
+
+            if n < 3:
                 cleaned = intensities.copy()
+            else:
+                window = kwargs.get("window", min(51, max(3, (n // 10) * 2 + 1)))
+
+                if window > n:
+                    window = n
+
+                if window % 2 == 0:
+                    window -= 1
+
+                polyorder = kwargs.get("polyorder", 3)
+
+                if polyorder >= window:
+                    polyorder = max(1, window - 1)
+
+                if window >= 3 and window > polyorder:
+                    cleaned = savgol_filter(intensities, window, polyorder)
+                else:
+                    cleaned = intensities.copy()
 
         elif method == "gaussian":
             sigma = kwargs.get('sigma', 2.0)
