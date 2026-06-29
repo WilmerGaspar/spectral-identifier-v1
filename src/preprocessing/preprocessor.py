@@ -373,8 +373,8 @@ class PreprocessingEngine:
                 break
 
             # Feedback: ajustar parámetros para siguiente iteración
-            if not quality['snr_pass']:
-            clean_params['window'] = min(clean_params['window'] + 20, max(5, len(intensities)//10*2+1))
+                        if not quality['snr_pass']:
+                            clean_params['window'] = min(clean_params['window'] + 20, max(5, len(intensities)//10*2+1))
 
             if not quality['baseline_pass']:
                 norm_params['degree'] = min(norm_params['degree'] + 1, 5)
