@@ -64,23 +64,23 @@ class ScientificReport:
     recommendations: List[str] = field(default_factory=list)
 
     def _convert_to_native(self, obj):
-    """Convierte numpy types a tipos nativos de Python para JSON."""
-    if isinstance(obj, np.ndarray):
-        return obj.tolist()
-
-    if isinstance(obj, np.generic):
-        return obj.item()
-
-    if isinstance(obj, dict):
-        return {str(k): self._convert_to_native(v) for k, v in obj.items()}
-
-    if isinstance(obj, list):
-        return [self._convert_to_native(v) for v in obj]
-
-    if isinstance(obj, tuple):
-        return [self._convert_to_native(v) for v in obj]
-
-    return obj
+        """Convierte numpy types a tipos nativos de Python para JSON."""
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+    
+        if isinstance(obj, np.generic):
+            return obj.item()
+    
+        if isinstance(obj, dict):
+            return {str(k): self._convert_to_native(v) for k, v in obj.items()}
+    
+        if isinstance(obj, list):
+            return [self._convert_to_native(v) for v in obj]
+    
+        if isinstance(obj, tuple):
+            return [self._convert_to_native(v) for v in obj]
+    
+        return obj
 
     def to_dict(self) -> dict:
         result = {
