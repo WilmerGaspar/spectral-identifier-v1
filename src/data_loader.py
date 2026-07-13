@@ -180,35 +180,105 @@ class DataLoader:
     # CSV FORMAT
     # ─────────────────────────────────────────────────────────
 
-    @staticmethod
-    def load_csv(filepath: str,
-                 wavenumber_col: str = 'wavenumber',
-                 intensity_col: str = 'intensity',
-                 delimiter: str = ',') -> Dict:
-        """Carga espectro desde CSV."""
+       @staticmethod
+       def load_csv(
+        filepath: str,
+        wavenumber_col: str = "wavenumber",
+        intensity_col: str = "intensity",
+        delimiter: str = ","
+    ) -> Dict:
+        """
+        Carga un espectro desde CSV.
+
+        Acepta encabezados comunes como:
+        - wavenumber,intensity
+        - x,intensity
+        - raman_shift,intensity
+        """
         filepath = Path(filepath)
 
         wavenumbers = []
         intensities = []
 
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, "r", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f, delimiter=delimiter)
+
+            if reader.fieldnames is None:
+                raise ValueError("CSV file has no header.")
+
+            field_map = {
+                field.strip().lower(): field
+                for field in reader.fieldnames
+                if field is not None
+            }
+
+            x_candidates = [
+                wavenumber_col,
+                "wavenumber",
+                "wavenumbers",
+                "x",
+                "raman_shift",
+                "raman shift",
+                "shift"
+            ]
+
+            y_candidates = [
+                intensity_col,
+                "intensity",
+                "intensities",
+                "y"
+            ]
+
+            x_column = next(
+                (
+                    field_map[name.lower()]
+                    for name in x_candidates
+                    if name.lower() in field_map
+                ),
+                None
+            )
+
+            y_column = next(
+                (
+                    field_map[name.lower()]
+                    for name in y_candidates
+                    if name.lower() in field_map
+                ),
+                None
+            )
+
+            if x_column is None or y_column is None:
+                raise ValueError(
+                    f"Unsupported CSV headers: {reader.fieldnames}. "
+                    "Expected spectral position and intensity columns."
+                )
+
             for row in reader:
                 try:
-                    wn = float(row[wavenumber_col])
-                    inten = float(row[intensity_col])
+                    wn = float(row[x_column])
+                    intensity = float(row[y_column])
+
                     wavenumbers.append(wn)
-                    intensities.append(inten)
-                except (ValueError, KeyError):
+                    intensities.append(intensity)
+
+                except (ValueError, TypeError, KeyError):
                     continue
 
+        if not wavenumbers or not intensities:
+            raise ValueError(
+                "CSV contains no valid spectral data points."
+            )
+
         return {
-            'id': filepath.stem,
-            'name': filepath.stem,
-            'source': 'CSV',
-            'wavenumbers': np.array(wavenumbers),
-            'intensities': np.array(intensities),
-            'metadata': {'filename': str(filepath)}
+            "id": filepath.stem,
+            "name": filepath.stem,
+            "source": "CSV",
+            "wavenumbers": np.array(wavenumbers, dtype=float),
+            "intensities": np.array(intensities, dtype=float),
+            "metadata": {
+                "filename": str(filepath)
+            }
+            }
         }
 
     # ─────────────────────────────────────────────────────────
