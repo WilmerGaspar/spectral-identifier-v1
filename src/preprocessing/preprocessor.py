@@ -205,30 +205,69 @@ class PreprocessingEngine:
 
         return wavenumbers, norm
 
-    def _fit_baseline(self, x: np.ndarray, y: np.ndarray, degree: int) -> np.ndarray:
-        """Ajusta línea base usando puntos mínimos locales."""
-        # Seleccionar puntos mínimos cada N puntos
-        n_segments = max(degree * 2, 10)
-        segment_size = len(x) // n_segments
+    def _fit_baseline(
+        self,
+        x: np.ndarray,
+        y: np.ndarray,
+        degree: int
+    ) -> np.ndarray:
+        """
+        Ajusta una línea base usando mínimos locales.
+
+        Evita segmentos vacíos y errores de np.argmin.
+        """
+        x = np.asarray(x, dtype=float)
+        y = np.asarray(y, dtype=float)
+
+        if x.size == 0 or y.size == 0:
+            return np.zeros_like(y, dtype=float)
+
+        if x.size != y.size:
+            raise ValueError(
+                "x and y must contain the same number of points."
+            )
+
+        if x.size < 3:
+            return np.zeros_like(y, dtype=float)
+
+        safe_degree = max(1, min(int(degree), x.size - 1))
+
+        n_segments = max(safe_degree * 2, 10)
+        n_segments = min(n_segments, x.size)
+
+        segments = np.array_split(
+            np.arange(x.size),
+            n_segments
+        )
 
         min_x = []
         min_y = []
-        for i in range(n_segments):
-            start = i * segment_size
-            end = min((i + 1) * segment_size, len(x))
-            idx = start + np.argmin(y[start:end])
-            min_x.append(x[idx])
-            min_y.append(y[idx])
 
-        # Interpolar spline a través de mínimos
-        if len(min_x) > degree:
-            coeffs = np.polyfit(min_x, min_y, degree)
-            baseline = np.polyval(coeffs, x)
-        else:
-            baseline = np.zeros_like(y)
+        for segment in segments:
+            if segment.size == 0:
+                continue
 
-        return baseline
+            segment_y = y[segment]
 
+            if segment_y.size == 0:
+                continue
+
+            local_position = int(np.argmin(segment_y))
+            index = int(segment[local_position])
+
+            min_x.append(x[index])
+            min_y.append(y[index])
+
+        if len(min_x) <= safe_degree:
+            return np.zeros_like(y, dtype=float)
+
+        coeffs = np.polyfit(
+            np.asarray(min_x),
+            np.asarray(min_y),
+            safe_degree
+        )
+
+        return np.polyval(coeffs, x)
     # ─────────────────────────────────────────────────────────
     # ALIGN: Interpolación a grid común
     # ─────────────────────────────────────────────────────────
