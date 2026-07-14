@@ -278,7 +278,6 @@ class DataLoader:
             "metadata": {
                 "filename": str(filepath)
             }
-            }
         }
 
     # ─────────────────────────────────────────────────────────
