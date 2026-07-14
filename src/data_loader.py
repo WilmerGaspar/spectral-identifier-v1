@@ -176,12 +176,12 @@ class DataLoader:
             'metadata': metadata
         }
 
-    # ─────────────────────────────────────────────────────────
+        # -------------------------------------------------------------------------
     # CSV FORMAT
-    # ─────────────────────────────────────────────────────────
+    # -------------------------------------------------------------------------
 
-       @staticmethod
-       def load_csv(
+    @staticmethod
+    def load_csv(
         filepath: str,
         wavenumber_col: str = "wavenumber",
         intensity_col: str = "intensity",
