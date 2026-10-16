@@ -307,6 +307,12 @@ class DataLoader:
             peak_intensities = [0.3, 0.15, 0.4, 0.2, 0.35, 1.0, 0.6, 0.25, 0.1]
             peak_widths = [3, 4, 5, 4, 3, 6, 4, 5, 3]
 
+        # Valores por defecto si solo se dieron posiciones
+        if peak_intensities is None:
+            peak_intensities = [1.0] * len(peak_positions)
+        if peak_widths is None:
+            peak_widths = [5.0] * len(peak_positions)
+
         # Generar picos gaussianos
         for pos, height, width in zip(peak_positions, peak_intensities, peak_widths):
             sigma = width / 2.355  # FWHM = 2.355 * sigma
