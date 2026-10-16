@@ -14,3 +14,4 @@ data/rruff/*.rruff
 *.egg-info/
 dist/
 build/
+benchmarks/out/
