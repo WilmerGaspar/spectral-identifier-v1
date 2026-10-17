@@ -251,3 +251,54 @@ def structure_factor_allowed_N(basis: Sequence[Tuple[float, float, float, float]
                 if abs(F) ** 2 > tol:
                     allowed.add(N)
     return allowed
+
+
+# ─────────────────────────────────────────────────────────────
+# Full powder profile for a cubic phase (positions from theta, intensities from |F|^2)
+# ─────────────────────────────────────────────────────────────
+
+def cubic_profile(grid_2theta, a, lattice, basis, wavelength=CU_KA1, fwhm=0.15,
+                  b_factor=0.0, zero_shift=0.0):
+    """
+    Simulated powder profile on a 2-theta grid.
+
+    Lines: every N with nonzero coefficient in the Ramanujan lattice theta series.
+    Intensity of line N: sum over all (h,k,l) with h^2+k^2+l^2 = N of |F_hkl|^2
+    (so the multiplicity is built in), times the Lorentz-polarization factor.
+    basis = [(x, y, z, Z), ...]; scattering factor f = Z * exp(-b_factor * s^2),
+    s = sin(theta)/lambda. b_factor = 0 means constant f (library model).
+    Peaks are Gaussian with the given FWHM (deg).
+    """
+    grid = np.asarray(grid_2theta, float)
+    tt_max = grid.max() + 1
+    d_min = wavelength / (2 * np.sin(np.radians(tt_max / 2)))
+    M = int((a / d_min) ** 2) + 1
+    theta = theta_cubic(lattice, M)
+    xyz = np.array([b[:3] for b in basis])
+    Z = np.array([b[3] for b in basis], float)
+    r = int(np.sqrt(M)) + 1
+    hkl_by_N: Dict[int, list] = {}
+    for h in range(-r, r + 1):
+        for k in range(-r, r + 1):
+            for l in range(-r, r + 1):
+                N = h * h + k * k + l * l
+                if 0 < N <= M and theta[N] > 0:
+                    hkl_by_N.setdefault(N, []).append((h, k, l))
+    y = np.zeros_like(grid)
+    sig = fwhm / 2.3548
+    for N, hkls in hkl_by_N.items():
+        d = a / np.sqrt(N)
+        tt = _two_theta(d, wavelength)
+        if tt is None:
+            continue
+        th = np.radians(tt / 2)
+        s = np.sin(th) / wavelength
+        f = Z * np.exp(-b_factor * s * s)
+        H = np.array(hkls)
+        F = (f[None, :] * np.exp(2j * np.pi * H @ xyz.T)).sum(axis=1)
+        I = float(np.sum(np.abs(F) ** 2))
+        if I < 1e-6:
+            continue
+        lp = (1 + np.cos(2 * th) ** 2) / (np.sin(th) ** 2 * np.cos(th))
+        y += I * lp * np.exp(-0.5 * ((grid - tt - zero_shift) / sig) ** 2)
+    return y
