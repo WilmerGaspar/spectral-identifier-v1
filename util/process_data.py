@@ -15,7 +15,7 @@ from pathlib import Path
 
 PROJECT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT / "data"
-SOURCE_DIR = DATA_DIR / "source"     # unzipped originals (written by dir_sync.py)
+SOURCE_DIR = DATA_DIR / "source"     # unzipped originals (written by extract_data_rruff.py)
 OUT_DIR = DATA_DIR / "parsed"        # the dataset you keep
 
 log = logging.getLogger("split_rruff")

@@ -3,7 +3,7 @@ Download every .zip from a web directory listing, unzip it, delete the zip.
 Files already downloaded on a previous run are skipped.
 
     import logging
-    from utill.dir_sync import sync
+    from extract_data_rruff import sync
 
     logging.basicConfig(level=logging.INFO)
     sync()
@@ -18,11 +18,11 @@ from pathlib import Path
 import requests
 
 URL = "https://rruff.net/zipped_data_files/raman/"   # <- change this
-# This file lives in <project>/utill/
+# This file lives in <project>/util/
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"   # <project>/data/
 SOURCE_DIR = DATA_DIR / "source"                             # unzipped originals go here
 
-log = logging.getLogger("dir_sync")
+log = logging.getLogger("extract_data_rruff")
 
 
 def sync():

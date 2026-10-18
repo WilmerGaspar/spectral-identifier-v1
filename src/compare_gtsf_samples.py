@@ -39,7 +39,8 @@ def load_spectrum_csv(file_path):
         reader = csv.DictReader(file)
 
         for row in reader:
-            x_values.append(float(row["x"]))
+            x_key = reader.fieldnames[0]  # sample CSVs use "x" or "wavenumber."
+            x_values.append(float(row[x_key]))
             intensities.append(float(row["intensity"]))
 
     return x_values, intensities
@@ -79,7 +80,7 @@ def main():
     logger.info("GTSF Minimal Descriptor Comparison")
     logger.info("==================================")
     logger.info("Samples: Quartz R040031 vs Calcite R040170")
-    logger.info()
+    logger.info("")
 
     keys = sorted(set(quartz.keys()) & set(calcite.keys()))
 
@@ -88,7 +89,7 @@ def main():
         logger.info(f"  quartz : {quartz[key]}")
         logger.info(f"  calcite: {calcite[key]}")
         logger.info(f"  diff   : {abs(quartz[key] - calcite[key])}")
-        logger.info()
+        logger.info("")
 
     distance = descriptor_distance(quartz, calcite)
 

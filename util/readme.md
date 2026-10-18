@@ -11,9 +11,9 @@ RRUFF server  ->  data/source/   ->  data/parsed/
    (zips)        (unzipped .txt)     (CSV + JSON, sorted raw / processed)
 ```
 
-1. **Download** (`utill/extract_data_rruff.py`): finds the `.zip` files listed on the RRUFF page,
+1. **Download** (`util/extract_data_rruff.py`): finds the `.zip` files listed on the RRUFF page,
    downloads the ones not downloaded before, unzips each into `data/source/`, then deletes the zip.
-2. **Split** (`utill/process_data.py`): reads every `.txt` in `data/source/` and writes the
+2. **Split** (`util/process_data.py`): reads every `.txt` in `data/source/` and writes the
    CSV and JSON files into `data/parsed/`.
 3. **Clean** (optional): deletes the unzipped originals once the split has been verified.
 
@@ -23,10 +23,11 @@ quality rating (`excellent`, `fair`, `poor`, `unrated`) and orientation (`orient
 
 ## Usage
 
-Run from the project root (the folder that contains `utill/`):
+Run from the project root (the folder that contains `util/`):
 
 ```bash
-python util/main.py            # download new zips, then split everythingalso delete datasource/ if the split checks out
+python util/main.py            # download new zips, then split everything
+python util/main.py --clean    # also delete data/source/ if the split checks out
 ```
 
 The exit code is `0` if everything worked and `1` if a download or any file failed.

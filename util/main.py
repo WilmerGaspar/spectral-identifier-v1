@@ -1,18 +1,18 @@
 """
 Run the whole pipeline: download -> split -> (optionally) delete the originals.
 
-Put this file in the project root, next to the utill/ folder, then run:
+Run from the project root:
 
-    python run_pipeline.py            # download new files, then split everything
-    python run_pipeline.py --clean    # ...and delete data/source/ if the split checks out
+    python util/main.py            # download new files, then split everything
+    python util/main.py --clean    # ...and delete data/source/ if the split checks out
 """
 
 import argparse
 import logging
 import sys
 
-from extract_data_rruff_copy import sync
-from process_data_copy import split_all, clean_source
+from extract_data_rruff import sync
+from process_data import split_all, clean_source
 
 log = logging.getLogger("pipeline")
 
