@@ -12,10 +12,20 @@ It then computes the minimal GTSF descriptor using:
 - theta-inspired moments
 """
 
+
 import csv
+import logging
 from pathlib import Path
 
 from src.gtsf_minimal import build_gtsf_descriptor
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
+
+logger = logging.getLogger(__name__)
 
 
 def load_spectrum_csv(file_path):
@@ -38,17 +48,18 @@ def main():
     if not sample_path.exists():
         raise FileNotFoundError(f"Sample file not found: {sample_path}")
 
+    logger.info("Loading spectrum from %s", sample_path)
+
     x_values, intensities = load_spectrum_csv(sample_path)
     descriptor = build_gtsf_descriptor(x_values, intensities)
 
-    print("GTSF Minimal Descriptor")
-    print("=======================")
-    print(f"Sample: Quartz RRUFF R040031 Raman 514 nm")
-    print(f"Points: {len(x_values)}")
-    print()
+    logger.info("GTSF Minimal Descriptor")
+    logger.info("=======================")
+    logger.info("Sample: Quartz RRUFF R040031 Raman 514 nm")
+    logger.info("Points: %d", len(x_values))
 
     for key, value in descriptor.items():
-        print(f"{key}: {value}")
+        logger.info("%s: %s", key, value)
 
 
 if __name__ == "__main__":

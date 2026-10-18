@@ -15,3 +15,8 @@ data/rruff/*.rruff
 dist/
 build/
 benchmarks/out/
+venv/
+*.log
+data/parsed/
+data/source/
+data/.downloaded.json
