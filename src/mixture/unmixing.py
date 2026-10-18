@@ -40,6 +40,7 @@ class UnmixingResult:
     noise_level: float
     residual_peaks: List[ResidualPeak] = field(default_factory=list)
     anomaly: bool = False
+    confirmed_phases: List[str] = field(default_factory=list)
     grid: Optional[np.ndarray] = None
     unknown: Optional[np.ndarray] = None
     fitted: Optional[np.ndarray] = None
@@ -89,16 +90,41 @@ class MixtureUnmixer:
     """
 
     def __init__(self, grid: Sequence[float], peak_snr_threshold: float = 6.0,
-                 min_peak_separation_cm: float = 8.0):
+                 min_peak_separation_cm: float = 8.0,
+                 known_peak_tolerance_cm: Optional[float] = None,
+                 min_phase_fraction: float = 0.05,
+                 shift_tolerant: bool = False):
+        """
+        known_peak_tolerance_cm: if set, a residual peak within this distance of
+        a peak of an identified phase (fraction >= min_phase_fraction) is treated
+        as sample-to-sample variation of a known phase, not as an unknown phase.
+        Needed when the library comes from OTHER samples than the measured one.
+        shift_tolerant: add +/- first and second derivatives of each reference as
+        extra non-negative columns, so small peak shifts and width changes between
+        samples are absorbed (first/second-order Taylor expansion of the reference).
+        Phase contributions are still read from the main columns only.
+        """
         self.grid = np.asarray(grid, float)
         self.snr_threshold = peak_snr_threshold
         self.min_sep = min_peak_separation_cm
+        self.known_tol = known_peak_tolerance_cm
+        self.shift_tolerant = shift_tolerant
+        self.min_phase_fraction = min_phase_fraction
         self.names: List[str] = []
         self._refs: List[np.ndarray] = []
+        self._ref_peaks: List[np.ndarray] = []
+        self._ref_heights: List[np.ndarray] = []
 
     def add_reference(self, name: str, wavenumbers, intensities):
         self.names.append(name)
-        self._refs.append(_to_grid(wavenumbers, intensities, self.grid))
+        ref = _to_grid(wavenumbers, intensities, self.grid)
+        self._refs.append(ref)
+        # Reference peaks: smoothed, and only clear peaks (>= 5 % of max) count,
+        # so noise ripples are never mistaken for known peak positions.
+        ref_s = savgol_filter(ref, 11, 3) if len(ref) > 11 else ref
+        idx, _ = find_peaks(ref_s, prominence=0.05)
+        self._ref_peaks.append(self.grid[idx])
+        self._ref_heights.append(ref_s[idx])
 
     def unmix(self, wavenumbers, intensities) -> UnmixingResult:
         if not self._refs:
@@ -106,9 +132,17 @@ class MixtureUnmixer:
 
         y = _to_grid(wavenumbers, intensities, self.grid)
         M = np.column_stack(self._refs)
-        w, _ = nnls(M, y)
+        k = M.shape[1]
+        if self.shift_tolerant:
+            d1 = np.gradient(M, axis=0)
+            d2 = np.gradient(d1, axis=0)
+            M_full = np.column_stack([M, d1, -d1, d2, -d2])
+        else:
+            M_full = M
+        w_full, _ = nnls(M_full, y)
+        w = w_full[:k]
 
-        fitted = M @ w
+        fitted = M_full @ w_full
         r = y - fitted
         ss_res = float(np.sum(r ** 2))
         ss_tot = float(np.sum((y - y.mean()) ** 2)) + 1e-12
@@ -124,6 +158,27 @@ class MixtureUnmixer:
         peaks.sort(key=lambda p: -p.height)
 
         total = float(w.sum()) or 1.0
+        confirmed = []
+        if self.known_tol is not None:
+            # A phase is confirmed only if most of its strongest reference peaks
+            # are actually present in the measured spectrum. Phases recruited by
+            # the fit to absorb an unknown peak fail this and do not shield it.
+            y_s = savgol_filter(y, 11, 3) if len(y) > 11 else y
+            meas_idx, _ = find_peaks(y_s, prominence=0.03)
+            meas = self.grid[meas_idx]
+            known_list = []
+            for name, pk, hk, wi in zip(self.names, self._ref_peaks, self._ref_heights, w):
+                if wi / total < self.min_phase_fraction or pk.size == 0:
+                    continue
+                top = pk[np.argsort(-hk)[:5]]
+                cover = np.mean([meas.size > 0 and np.min(np.abs(meas - t)) <= self.known_tol
+                                 for t in top])
+                if cover >= 0.6:
+                    confirmed.append(name)
+                    known_list.append(pk)
+            known = np.concatenate(known_list) if known_list else np.array([])
+            peaks = [p for p in peaks
+                     if known.size == 0 or np.min(np.abs(known - p.wavenumber)) > self.known_tol]
         return UnmixingResult(
             weights={n: float(v) for n, v in zip(self.names, w)},
             fractions={n: float(v) / total for n, v in zip(self.names, w)},
@@ -132,5 +187,6 @@ class MixtureUnmixer:
             noise_level=noise,
             residual_peaks=peaks,
             anomaly=len(peaks) > 0,
+            confirmed_phases=confirmed,
             grid=self.grid, unknown=y, fitted=fitted, residual=r,
         )
