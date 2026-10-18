@@ -8,9 +8,17 @@ Samples:
 
 import csv
 import math
+import logging
 from pathlib import Path
 
 from src.gtsf_minimal import build_gtsf_descriptor
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
+
+logger = logging.getLogger(__name__)
 
 
 SAMPLES = {
@@ -68,25 +76,25 @@ def main():
     quartz = descriptors["quartz_R040031_514"]
     calcite = descriptors["calcite_R040170_514"]
 
-    print("GTSF Minimal Descriptor Comparison")
-    print("==================================")
-    print("Samples: Quartz R040031 vs Calcite R040170")
-    print()
+    logger.info("GTSF Minimal Descriptor Comparison")
+    logger.info("==================================")
+    logger.info("Samples: Quartz R040031 vs Calcite R040170")
+    logger.info()
 
     keys = sorted(set(quartz.keys()) & set(calcite.keys()))
 
     for key in keys:
-        print(f"{key}")
-        print(f"  quartz : {quartz[key]}")
-        print(f"  calcite: {calcite[key]}")
-        print(f"  diff   : {abs(quartz[key] - calcite[key])}")
-        print()
+        logger.info(f"{key}")
+        logger.info(f"  quartz : {quartz[key]}")
+        logger.info(f"  calcite: {calcite[key]}")
+        logger.info(f"  diff   : {abs(quartz[key] - calcite[key])}")
+        logger.info()
 
     distance = descriptor_distance(quartz, calcite)
 
-    print("Overall descriptor distance")
-    print("---------------------------")
-    print(distance)
+    logger.info("Overall descriptor distance")
+    logger.info("---------------------------")
+    logger.info(distance)
 
 
 if __name__ == "__main__":

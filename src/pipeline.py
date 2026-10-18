@@ -13,6 +13,7 @@ Autor: Spectral Identifier Team
 import numpy as np
 from typing import List, Dict, Optional, Tuple
 import warnings
+import logging
 
 # Imports de motores
 from src.preprocessing.preprocessor import PreprocessingEngine, SpectrumMetadata
@@ -21,6 +22,14 @@ from src.engines.peak_extractor import PeakExtractionEngine
 from src.matching.similarity import SimilarityEngine
 from src.anomaly.detector import AnomalyDetectionEngine
 from src.reporting.report import ReportGenerator
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
+
+logger = logging.getLogger(__name__)
+
 
 
 class SpectralIdentifierPipeline:
@@ -116,7 +125,7 @@ class SpectralIdentifierPipeline:
                 'metadata': preprocessed.metadata.to_dict()
             })
 
-        print(f"Base de datos cargada: {len(self.database)} referencias")
+        logger.info(f"Base de datos cargada: {len(self.database)} referencias")
 
     # ─────────────────────────────────────────────────────────
     # PIPELINE PRINCIPAL
@@ -199,7 +208,7 @@ class SpectralIdentifierPipeline:
             # ── FASE 6: FEEDBACK LOOP ──
             if anomaly_result.requires_feedback and feedback_count < max_feedback_loops:
                 feedback_count += 1
-                print(f"Feedback loop {feedback_count}: {anomaly_result.feedback_reason}")
+                logger.info(f"Feedback loop {feedback_count}: {anomaly_result.feedback_reason}")
 
                 # Ajustar preprocesamiento y reintentar
                 preprocessed = self._reprocess_with_adjustments(
