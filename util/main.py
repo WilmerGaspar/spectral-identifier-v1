@@ -18,7 +18,7 @@ from process_data import split_all, clean_source
 log = logging.getLogger("pipeline")
 
 
-def main(clean: bool = False, dataset: str=None, only=None) -> int:
+def main(clean: bool = False, dataset: str = "raman", only=None) -> int:
     """Returns 0 on success, 1 if anything failed."""
     problems = 0
 

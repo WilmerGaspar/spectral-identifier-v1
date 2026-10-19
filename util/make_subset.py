@@ -26,7 +26,9 @@ from pathlib import Path
 import numpy as np
 
 PROJECT = Path(__file__).resolve().parent.parent
-PARSED = PROJECT / "data" / "parsed" / "processed"
+# New layout: data/parsed/<dataset>/processed (older runs wrote data/parsed/processed)
+_NEW = PROJECT / "data" / "parsed" / "raman" / "processed"
+PARSED = _NEW if _NEW.exists() else PROJECT / "data" / "parsed" / "processed"
 OUT = PROJECT / "data" / "rruff_subset"
 GRID = np.arange(150.0, 1500.0 + 1e-9, 2.0)
 
