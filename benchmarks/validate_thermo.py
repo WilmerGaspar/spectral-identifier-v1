@@ -17,7 +17,7 @@ import numpy as np
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, ROOT)
 
-from src.thermo.raman_thermo import find_raman_modes, estimate
+from src.reporting.thermo.raman_thermo import find_raman_modes, estimate
 
 CASES = [
     # file, atoms per formula unit, Cp_ref, S_ref
