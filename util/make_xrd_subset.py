@@ -23,7 +23,7 @@ from pathlib import Path
 import numpy as np
 
 PROJECT = Path(__file__).resolve().parent.parent
-PARSED = PROJECT / "data" / "parsed" / "processed"
+PARSED = PROJECT / "data" / "parsed" / "powder" / "processed"
 OUT = PROJECT / "data" / "rruff_xrd_subset"
 GRID = np.arange(5.0, 90.0 + 1e-9, 0.02)
 

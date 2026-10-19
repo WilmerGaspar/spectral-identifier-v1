@@ -1,8 +1,13 @@
 """
-Split every RRUFF .txt file into:
-    - Individual CSV files matching the original folder layout.
-    - One single consolidated JSON file per source folder for metadata.
-    - One single consolidated JSON file per source folder for errors/failures.
+Split every RRUFF .txt file of one dataset (raman, powder, infrared, ...) into:
+    - one CSV per spectrum, in the same folder layout as the downloaded zips
+    - one consolidated JSON per source folder with the metadata
+    - one consolidated JSON per source folder listing files that failed
+
+    data/source/<dataset>/<zip folder>/*.txt          (input, written by extract_data_rruff.py)
+    data/parsed/<dataset>/{raw,processed}/csv/<zip folder>/<spectrum>.csv
+    data/parsed/<dataset>/{raw,processed}/json/<zip folder>.json
+    data/parsed/<dataset>/failed/json/<zip folder>.json
 """
 
 import json
@@ -15,14 +20,25 @@ from pathlib import Path
 
 PROJECT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT / "data"
-SOURCE_DIR = DATA_DIR / "source"     # unzipped originals (written by extract_data_rruff.py)
-OUT_DIR = DATA_DIR / "parsed"        # the dataset you keep
+SOURCE_ROOT = DATA_DIR / "source"     # source/<dataset>/...   (written by extract_data_rruff.py)
+OUT_ROOT = DATA_DIR / "parsed"        # parsed/<dataset>/...   (the dataset you keep)
 
-log = logging.getLogger("split_rruff")
+log = logging.getLogger("process_data")
+
+# Name of the first CSV column for each dataset. Anything else is called "x".
+X_NAMES = {"raman": "wavenumber", "infrared": "wavenumber", "powder": "two_theta"}
 
 # Columns may be separated by commas, tabs, spaces or semicolons (RRUFF uses both
 # "x, y" and "x<TAB>y" in different files).
 SEPARATOR = re.compile(r"[,\t; ]+")
+
+# "raw" as its own word, also when joined with underscores (XY_RAW, Raman_Data_RAW),
+# but not inside other words (Crawfordite).
+RAW_WORD = re.compile(r"(?<![A-Za-z])raw(?![A-Za-z])", re.IGNORECASE)
+
+# RRUFF file names end in a long hex id, e.g. "..._Raman_Data_RAW__c7ee56937fa26d4a89736f652793".
+# Outputs are saved without it; the full original name stays in the JSON as "source_file".
+HASH_SUFFIX = re.compile(r"__[0-9a-fA-F]{16,}$")
 
 
 def split_file(txt: Path):
@@ -77,30 +93,27 @@ def quality_orientation(folder: str):
 
 def is_raw(meta: dict, txt: Path) -> bool:
     filetype = meta.get("FILETYPE", "")
-    if filetype:
-        return re.search(r"\braw\b", filetype, re.IGNORECASE) is not None
+    if filetype:                                    # the header decides when present
+        return RAW_WORD.search(filetype) is not None
+    # fallback: a standalone uppercase RAW in the file name
     return re.search(r"(?<![A-Za-z])RAW(?![A-Za-z])", txt.name) is not None
 
 
-# RRUFF file names end in a long hex id, e.g. "..._Raman_Data_RAW__c7ee56937fa26d4a89736f652793".
-# Outputs are saved without it; the full original name stays in the JSON as "source_file".
-HASH_SUFFIX = re.compile(r"__[0-9a-fA-F]{16,}$")
+def top_folder(f: Path, source_dir: Path) -> str:
+    parts = f.relative_to(source_dir).parts
+    return parts[0] if len(parts) > 1 else "root"
 
 
-def plan_names(files):
+def plan_names(files, source_dir: Path):
     """
     Map each source file to the name its outputs are saved under: the file name without
     the trailing hex id. If removing it would make two files in the same source folder
     share a name, those files keep their full name, so nothing is ever overwritten.
     Returns {Path: output_stem}.
     """
-    def top_folder(f):
-        parts = f.relative_to(SOURCE_DIR).parts
-        return parts[0] if len(parts) > 1 else "root"
-
     groups = defaultdict(list)
     for f in files:
-        groups[(top_folder(f), HASH_SUFFIX.sub("", f.stem))].append(f)
+        groups[(top_folder(f, source_dir), HASH_SUFFIX.sub("", f.stem))].append(f)
 
     names = {}
     for (folder, short), members in groups.items():
@@ -116,14 +129,13 @@ def plan_names(files):
 
 def process_single_file(job: tuple) -> tuple:
     """
-    Processes a single file. job = (source path, name to save the outputs under).
+    Processes a single file.
+    job = (source path, name to save outputs under, source dir, output dir, dataset)
     Returns: (source_folder_name, output_name, status_kind, result_data)
     """
-    txt, filename_stem = job
-    rel = txt.relative_to(SOURCE_DIR)
-
-    # Extract the topmost subfolder name under data/ dynamically
-    folder = rel.parts[0] if len(rel.parts) > 1 else "root"
+    txt, filename_stem, source_dir, out_dir, dataset = job
+    rel = txt.relative_to(source_dir)
+    folder = top_folder(txt, source_dir)
 
     try:
         meta, rows = split_file(txt)
@@ -131,18 +143,16 @@ def process_single_file(job: tuple) -> tuple:
             raise ValueError("no numeric data rows")
 
         kind = "raw" if is_raw(meta, txt) else "processed"
-        sub = rel.parent
-        csv_dir = OUT_DIR / kind / "csv" / sub
-
+        csv_dir = out_dir / kind / "csv" / rel.parent
         csv_dir.mkdir(parents=True, exist_ok=True)
-        name = filename_stem
 
-        xname = "wavenumber" if "raman" in meta.get("FILETYPE", "").lower() else "x"
-        with open(csv_dir / f"{name}.csv", "w", encoding="utf-8", newline="") as f:
+        xname = X_NAMES.get(dataset, "x")
+        with open(csv_dir / f"{filename_stem}.csv", "w", encoding="utf-8", newline="") as f:
             f.write(f"{xname},intensity\n")
             f.writelines(f"{x},{y}\n" for x, y in rows)
 
         # Build clean metadata structure
+        meta["dataset"] = dataset
         meta["source_folder"] = folder
         meta["quality"], meta["orientation"] = quality_orientation(folder)
         meta["source_file"] = rel.as_posix()
@@ -154,92 +164,98 @@ def process_single_file(job: tuple) -> tuple:
         return folder, filename_stem, "failed", str(e)
 
 
-def split_all():
-    """Split every .txt under SOURCE_DIR concurrently using a pooled map strategy."""
+def _write_groups(groups, out_dir: Path):
+    for folder, entries in groups.items():
+        out_dir.mkdir(parents=True, exist_ok=True)
+        (out_dir / f"{folder}.json").write_text(
+            json.dumps(entries, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+def split_all(dataset: str = "raman"):
+    """Split every .txt under data/source/<dataset>/ concurrently."""
+    source_dir = SOURCE_ROOT / dataset
+    out_dir = OUT_ROOT / dataset
+
     counts = {"raw": 0, "processed": 0, "failed": 0}
-    files = sorted(SOURCE_DIR.rglob("*.txt"))
+    files = sorted(source_dir.rglob("*.txt"))
     total_files = len(files)
 
     if not files:
-        log.warning("No .txt files found under %s", SOURCE_DIR)
+        log.warning("No .txt files found under %s", source_dir)
         return counts
 
     # Failure files describe the latest run only: remove ones left by earlier runs.
-    shutil.rmtree(OUT_DIR / "failed", ignore_errors=True)
+    shutil.rmtree(out_dir / "failed", ignore_errors=True)
 
     workers = cpu_count()
-    log.info("Starting processing on %d workers for %d files...", workers, total_files)
+    log.info("[%s] Starting processing on %d workers for %d files...", dataset, workers, total_files)
 
-    # Dynamic groupings for ALL folders found in data/
     raw_groups = defaultdict(dict)
     processed_groups = defaultdict(dict)
     failed_groups = defaultdict(dict)
 
+    names = plan_names(files, source_dir)
+    jobs = [(f, names[f], source_dir, out_dir, dataset) for f in files]
+
     with Pool(processes=workers) as pool:
         chunksize = max(1, total_files // (workers * 4))
-        names = plan_names(files)
-        jobs = [(f, names[f]) for f in files]
         results = pool.imap_unordered(process_single_file, jobs, chunksize=chunksize)
 
         for idx, (folder, filename_stem, kind, data) in enumerate(results, 1):
             counts[kind] += 1
-
-            if kind == "raw":
-                raw_groups[folder][filename_stem] = data
-            elif kind == "processed":
-                processed_groups[folder][filename_stem] = data
-            elif kind == "failed":
-                failed_groups[folder][filename_stem] = data
+            {"raw": raw_groups, "processed": processed_groups, "failed": failed_groups}[kind][folder][filename_stem] = data
 
             if idx % 100 == 0 or idx == total_files:
-                log.info("Progress: %d/%d files completed...", idx, total_files)
+                log.info("[%s] Progress: %d/%d files completed...", dataset, idx, total_files)
 
-    # Save consolidated raw metadata files dynamically per folder
-    for folder, meta_dict in raw_groups.items():
-        json_dir = OUT_DIR / "raw" / "json"
-        json_dir.mkdir(parents=True, exist_ok=True)
-        (json_dir / f"{folder}.json").write_text(
-            json.dumps(meta_dict, indent=2, ensure_ascii=False), encoding="utf-8"
-        )
+    _write_groups(raw_groups, out_dir / "raw" / "json")
+    _write_groups(processed_groups, out_dir / "processed" / "json")
+    _write_groups(failed_groups, out_dir / "failed" / "json")
 
-    # Save consolidated processed metadata files dynamically per folder
-    for folder, meta_dict in processed_groups.items():
-        json_dir = OUT_DIR / "processed" / "json"
-        json_dir.mkdir(parents=True, exist_ok=True)
-        (json_dir / f"{folder}.json").write_text(
-            json.dumps(meta_dict, indent=2, ensure_ascii=False), encoding="utf-8"
-        )
-
-    # Save consolidated failure log files dynamically per folder
-    for folder, error_dict in failed_groups.items():
-        error_dir = OUT_DIR / "failed" / "json"
-        error_dir.mkdir(parents=True, exist_ok=True)
-        (error_dir / f"{folder}.json").write_text(
-            json.dumps(error_dict, indent=2, ensure_ascii=False), encoding="utf-8"
-        )
-
-    log.info("Done: %(raw)d raw, %(processed)d processed, %(failed)d failed", counts)
+    log.info("[%s] Done: %d raw, %d processed, %d failed",
+             dataset, counts["raw"], counts["processed"], counts["failed"])
     return counts
 
 
-def clean_source():
-    """Delete the contents of data/source/ while keeping the directory."""
-    if SOURCE_DIR.name != "source":
-        raise RuntimeError(
-            f"Refusing to clean {SOURCE_DIR}: not a 'source' folder"
-        )
+def clean_source(dataset: str = "raman"):
+    """
+    Delete the unzipped originals in data/source/<dataset>/ once the split is verified.
 
-    if not SOURCE_DIR.exists():
-        log.warning("Source directory does not exist: %s", SOURCE_DIR)
+    Deletes only when every .txt has a matching CSV under parsed/<dataset>/raw or /processed
+    and nothing is listed in parsed/<dataset>/failed. Only the contents of the dataset's
+    source folder are removed: parsed/ and .downloaded.json are never touched.
+    Returns True if anything was deleted.
+    """
+    source_dir = SOURCE_ROOT / dataset
+    out_dir = OUT_ROOT / dataset
+
+    if source_dir.parent.name != "source":                # safety guard against a bad path edit
+        raise RuntimeError(f"Refusing to clean {source_dir}: not inside a 'source' folder")
+
+    files = list(source_dir.rglob("*.txt"))
+    if not files:
+        log.warning("Nothing to clean: no .txt files under %s", source_dir)
         return False
 
-    for child in SOURCE_DIR.iterdir():
-        if child.is_dir():
-            shutil.rmtree(child)
-        else:
-            child.unlink()
+    failed_dir = out_dir / "failed"
+    if failed_dir.exists() and any(failed_dir.rglob("*.json")):
+        log.error("Not cleaning: failures are listed in %s", failed_dir)
+        return False
 
-    log.info("Cleaned source directory: %s", SOURCE_DIR)
+    names = plan_names(files, source_dir)
+    missing = []
+    for txt in files:
+        rel_csv = txt.relative_to(source_dir).parent / f"{names[txt]}.csv"
+        if not any((out_dir / kind / "csv" / rel_csv).exists() for kind in ("raw", "processed")):
+            missing.append(txt.relative_to(source_dir).as_posix())
+    if missing:
+        log.error("Not cleaning: %d of %d files have no CSV yet, e.g. %s",
+                  len(missing), len(files), missing[:3])
+        return False
+
+    for child in source_dir.iterdir():
+        shutil.rmtree(child) if child.is_dir() else child.unlink()
+    log.info("Cleaned %s: removed %d original files", source_dir, len(files))
     return True
 
 

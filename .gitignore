@@ -21,3 +21,4 @@ data/parsed/*
 data/source/
 data/.downloaded.json
 .env
+util/migrate.py
