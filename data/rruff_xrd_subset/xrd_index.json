@@ -1,0 +1,604 @@
+[
+ {
+  "mineral": "Almandine",
+  "space_group": "Ia-3d",
+  "rruff_id": "R040076",
+  "stem": "Almandine__R040076-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.5389 b: 11.5389 c: 11.5389 alpha: 90 beta: 90 gamma: 90 volume: 1536.39 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Almandine",
+  "space_group": "Ia-3d",
+  "rruff_id": "R040079",
+  "stem": "Almandine__R040079-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.5379 b: 11.5379 c: 11.5379 alpha: 90 beta: 90 gamma: 90 volume: 1535.98 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Almandine",
+  "space_group": "Ia-3d",
+  "rruff_id": "R040168",
+  "stem": "Almandine__R040168-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.5837 b: 11.5837 c: 11.5837 alpha: 90 beta: 90 gamma: 90 volume: 1554.34 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Almandine",
+  "space_group": "Ia-3d",
+  "rruff_id": "R050029",
+  "stem": "Almandine__R050029-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.5442 b: 11.5442 c: 11.5442 alpha: 90 beta: 90 gamma: 90 volume: 1538.48 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Andradite",
+  "space_group": "Ia-3d",
+  "rruff_id": "R040001",
+  "stem": "Andradite__R040001-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   89.99
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 12.063 b: 12.063 c: 12.063 alpha: 90 beta: 90 gamma: 90 volume: 1755.36 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Andradite",
+  "space_group": "Ia-3d",
+  "rruff_id": "R050256",
+  "stem": "Andradite__R050256-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.9411 b: 11.9411 c: 11.9411 alpha: 90 beta: 90 gamma: 90 volume: 1702.68 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Andradite",
+  "space_group": "Ia-3d",
+  "rruff_id": "R050311",
+  "stem": "Andradite__R050311-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.9779 b: 11.9779 c: 11.9779 alpha: 90 beta: 90 gamma: 90 volume: 1718.5 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Andradite",
+  "space_group": "Ia-3d",
+  "rruff_id": "R050377",
+  "stem": "Andradite__R050377-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 12.0828 b: 12.0828 c: 12.0828 alpha: 90 beta: 90 gamma: 90 volume: 1764 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Diamond",
+  "space_group": "Fd-3m (diamond, 8a)",
+  "rruff_id": "R050205",
+  "stem": "Diamond__R050205-9__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 3.564 b: 3.564 c: 3.564 alpha: 90 beta: 90 gamma: 90 volume: 45.27 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Diamond",
+  "space_group": "Fd-3m (diamond, 8a)",
+  "rruff_id": "R050206",
+  "stem": "Diamond__R050206-9__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 3.568 b: 3.568 c: 3.568 alpha: 90 beta: 90 gamma: 90 volume: 45.423 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Diamond",
+  "space_group": "Fd-3m (diamond, 8a)",
+  "rruff_id": "R050207",
+  "stem": "Diamond__R050207-9__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 3.558 b: 3.558 c: 3.558 alpha: 90 beta: 90 gamma: 90 volume: 45.042 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Fluorite",
+  "space_group": "Fm-3m",
+  "rruff_id": "R040099",
+  "stem": "Fluorite__R040099-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 5.46393 b: 5.46393 c: 5.46393 alpha: 90 beta: 90 gamma: 90 volume: 163.123 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Fluorite",
+  "space_group": "Fm-3m",
+  "rruff_id": "R050045",
+  "stem": "Fluorite__R050045-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 5.46445 b: 5.46445 c: 5.46445 alpha: 90 beta: 90 gamma: 90 volume: 163.17 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Fluorite",
+  "space_group": "Fm-3m",
+  "rruff_id": "R050046",
+  "stem": "Fluorite__R050046-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 5.4639 b: 5.4639 c: 5.4639 alpha: 90 beta: 90 gamma: 90 volume: 163.12 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Fluorite",
+  "space_group": "Fm-3m",
+  "rruff_id": "R050115",
+  "stem": "Fluorite__R050115-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 5.46438 b: 5.46438 c: 5.46438 alpha: 90 beta: 90 gamma: 90 volume: 163.163 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Franklinite",
+  "space_group": "Fd-3m",
+  "rruff_id": "R070137",
+  "stem": "Franklinite__R070137-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 8.46609 b: 8.46609 c: 8.46609 alpha: 90 beta: 90 gamma: 90 volume: 606.8 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Gahnite",
+  "space_group": "Fd-3m",
+  "rruff_id": "R040027",
+  "stem": "Gahnite__R040027-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 8.0988 b: 8.0988 c: 8.0988 alpha: 90 beta: 90 gamma: 90 volume: 531.22 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Galena",
+  "space_group": "Fm-3m",
+  "rruff_id": "R060187",
+  "stem": "Galena__R060187-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 5.938 b: 5.938 c: 5.938 alpha: 90 beta: 90 gamma: 90 volume: 209.37 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Galena",
+  "space_group": "Fm-3m",
+  "rruff_id": "R070325",
+  "stem": "Galena__R070325-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 5.9373 b: 5.9373 c: 5.9373 alpha: 90 beta: 90 gamma: 90 volume: 209.3 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Grossular",
+  "space_group": "Ia-3d",
+  "rruff_id": "R040065",
+  "stem": "Grossular__R040065-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.8517 b: 11.8517 c: 11.8517 alpha: 90 beta: 90 gamma: 90 volume: 1664.75 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Grossular",
+  "space_group": "Ia-3d",
+  "rruff_id": "R040066",
+  "stem": "Grossular__R040066-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.8665 b: 11.8665 c: 11.8665 alpha: 90 beta: 90 gamma: 90 volume: 1670.9 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Grossular",
+  "space_group": "Ia-3d",
+  "rruff_id": "R050036",
+  "stem": "Grossular__R050036-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.8851 b: 11.8851 c: 11.8851 alpha: 90 beta: 90 gamma: 90 volume: 1678.8 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Grossular",
+  "space_group": "Ia-3d",
+  "rruff_id": "R050081",
+  "stem": "Grossular__R050081-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.974 b: 11.974 c: 11.974 alpha: 90 beta: 90 gamma: 90 volume: 1716.7 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Halite",
+  "space_group": "Fm-3m",
+  "rruff_id": "R070292",
+  "stem": "Halite__R070292-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 5.64167 b: 5.64167 c: 5.64167 alpha: 90 beta: 90 gamma: 90 volume: 179.565 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Halite",
+  "space_group": "Fm-3m",
+  "rruff_id": "R070534",
+  "stem": "Halite__R070534-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 5.64154 b: 5.64154 c: 5.64154 alpha: 90 beta: 90 gamma: 90 volume: 179.553 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Halite",
+  "space_group": "Fm-3m",
+  "rruff_id": "R070586",
+  "stem": "Halite__R070586-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 5.6429 b: 5.6429 c: 5.6429 alpha: 90 beta: 90 gamma: 90 volume: 179.68 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Magnetite",
+  "space_group": "Fd-3m",
+  "rruff_id": "R060191",
+  "stem": "Magnetite__R060191-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 8.3961 b: 8.3961 c: 8.3961 alpha: 90 beta: 90 gamma: 90 volume: 591.9 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Magnetite",
+  "space_group": "Fd-3m",
+  "rruff_id": "R060656",
+  "stem": "Magnetite__R060656-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 8.4003 b: 8.4003 c: 8.4003 alpha: 90 beta: 90 gamma: 90 volume: 592.78 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Magnetite",
+  "space_group": "Fd-3m",
+  "rruff_id": "R080025",
+  "stem": "Magnetite__R080025-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 8.3995 b: 8.3995 c: 8.3995 alpha: 90 beta: 90 gamma: 90 volume: 592.59 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Pyrope",
+  "space_group": "Ia-3d",
+  "rruff_id": "R040159",
+  "stem": "Pyrope__R040159-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.535 b: 11.535 c: 11.535 alpha: 90 beta: 90 gamma: 90 volume: 1534.82 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Pyrope",
+  "space_group": "Ia-3d",
+  "rruff_id": "R050112",
+  "stem": "Pyrope__R050112-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.5306 b: 11.5306 c: 11.5306 alpha: 90 beta: 90 gamma: 90 volume: 1533.08 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Pyrope",
+  "space_group": "Ia-3d",
+  "rruff_id": "R050113",
+  "stem": "Pyrope__R050113-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.5717 b: 11.5717 c: 11.5717 alpha: 90 beta: 90 gamma: 90 volume: 1549.5 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Pyrope",
+  "space_group": "Ia-3d",
+  "rruff_id": "R050446",
+  "stem": "Pyrope__R050446-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.54112 b: 11.54112 c: 11.54112 alpha: 90 beta: 90 gamma: 90 volume: 1537.24 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Spessartine",
+  "space_group": "Ia-3d",
+  "rruff_id": "R050063",
+  "stem": "Spessartine__R050063-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.6359 b: 11.6359 c: 11.6359 alpha: 90 beta: 90 gamma: 90 volume: 1575.44 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Spessartine",
+  "space_group": "Ia-3d",
+  "rruff_id": "R060177",
+  "stem": "Spessartine__R060177-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.6505 b: 11.6505 c: 11.6505 alpha: 90 beta: 90 gamma: 90 volume: 1581.4 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Spessartine",
+  "space_group": "Ia-3d",
+  "rruff_id": "R060279",
+  "stem": "Spessartine__R060279-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.6798 b: 11.6798 c: 11.6798 alpha: 90 beta: 90 gamma: 90 volume: 1593.3 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Spessartine",
+  "space_group": "Ia-3d",
+  "rruff_id": "R060447",
+  "stem": "Spessartine__R060447-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.6205 b: 11.6205 c: 11.6205 alpha: 90 beta: 90 gamma: 90 volume: 1569.19 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Spinel",
+  "space_group": "Fd-3m",
+  "rruff_id": "R050184",
+  "stem": "Spinel__R050184-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 8.08978 b: 8.08978 c: 8.08978 alpha: 90 beta: 90 gamma: 90 volume: 529.43 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Spinel",
+  "space_group": "Fd-3m",
+  "rruff_id": "R050259",
+  "stem": "Spinel__R050259-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 8.0889 b: 8.0889 c: 8.0889 alpha: 90 beta: 90 gamma: 90 volume: 529.26 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Spinel",
+  "space_group": "Fd-3m",
+  "rruff_id": "R050392",
+  "stem": "Spinel__R050392-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 8.0911 b: 8.0911 c: 8.0911 alpha: 90 beta: 90 gamma: 90 volume: 529.69 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Spinel",
+  "space_group": "Fd-3m",
+  "rruff_id": "R050411",
+  "stem": "Spinel__R050411-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 8.0871 b: 8.0871 c: 8.0871 alpha: 90 beta: 90 gamma: 90 volume: 528.92 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Sylvite",
+  "space_group": "Fm-3m",
+  "rruff_id": "R050166",
+  "stem": "Sylvite__R050166-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 6.29218 b: 6.29218 c: 6.29218 alpha: 90 beta: 90 gamma: 90 volume: 249.117 crystal system: cubic"
+  }
+ },
+ {
+  "mineral": "Uvarovite",
+  "space_group": "Ia-3d",
+  "rruff_id": "R061041",
+  "stem": "Uvarovite__R061041-1__Powder__Xray_Data_XY_Processed",
+  "folder": "XY_Processed",
+  "x_range": [
+   5.0,
+   90.0
+  ],
+  "header": {
+   "CELL PARAMETERS": "a: 11.9433 b: 11.9433 c: 11.9433 alpha: 90 beta: 90 gamma: 90 volume: 1703.6 crystal system: cubic"
+  }
+ }
+]
