@@ -1,36 +1,124 @@
-# RRUFF Raman Data Pipeline
+# RRUFF Data Pipeline
 
-Downloads the zipped Raman spectra from RRUFF, splits every spectrum into a
-**CSV** (the numbers) and a **JSON** (the metadata), and sorts them into **raw**
-and **processed** folders. Re-running only downloads zips it has not seen before.
+Downloads zipped spectra from RRUFF (Raman, powder XRD, infrared), splits every spectrum into a
+**CSV** (the numbers) and a **JSON** (the metadata), and sorts them into **raw** and **processed**
+folders. Re-running only downloads zips it has not seen before.
 
 ## What it does
 
 ```
-RRUFF server  ->  data/source/   ->  data/parsed/
-   (zips)        (unzipped .txt)     (CSV + JSON, sorted raw / processed)
+RRUFF server  ->  data/source/<dataset>/  ->  data/parsed/<dataset>/
+   (zips)          (unzipped .txt)             (CSV + JSON, sorted raw / processed)
 ```
 
-1. **Download** (`util/extract_data_rruff.py`): finds the `.zip` files listed on the RRUFF page,
-   downloads the ones not downloaded before, unzips each into `data/source/`, then deletes the zip.
-2. **Split** (`util/process_data.py`): reads every `.txt` in `data/source/` and writes the
-   CSV and JSON files into `data/parsed/`.
-3. **Clean** (optional): deletes the unzipped originals once the split has been verified.
+1. **Download** (`util/extract_data_rruff.py`): finds the `.zip` files listed on the RRUFF page for
+   the chosen dataset, downloads the ones not downloaded before, unzips each into
+   `data/source/<dataset>/`, then deletes the zip.
+2. **Split** (`util/process_data.py`): reads every `.txt` of that dataset and writes the CSV and
+   JSON files into `data/parsed/<dataset>/`.
+3. **Clean** (optional): deletes that dataset's unzipped originals once the split has been verified.
 
-The folder names under `source/` and `csv/` are the zip names from RRUFF. They carry the
-quality rating (`excellent`, `fair`, `poor`, `unrated`) and orientation (`oriented`,
-`unoriented`). `LR-Raman` has neither.
+Each dataset has its own folders, so zips with the same name in different datasets never collide.
+
+## Folder structure
+
+```
+project/
+├── pipeline.log                 # created on the first run
+├── util/
+│   ├── main.py                  # runs everything
+│   ├── extract_data_rruff.py    # step 1: download + unzip
+│   ├── process_data.py          # step 2: split, and step 3: clean
+│   └── migrate_layout.py        # one-time move from the old single-dataset layout
+└── data/                        # created automatically
+    ├── .downloaded.json         # record of zips already handled (do not delete)
+    ├── source/                  # unzipped originals
+    │   ├── raman/
+    │   │   ├── excellent_oriented/
+    │   │   ├── fair_unoriented/
+    │   │   └── ...
+    │   └── powder/
+    │       └── XY_Processed/
+    └── parsed/                  # the data you keep
+        ├── raman/
+        │   ├── raw/
+        │   │   ├── csv/<zip folder>/<spectrum>.csv
+        │   │   └── json/<zip folder>.json
+        │   ├── processed/
+        │   │   ├── csv/<zip folder>/<spectrum>.csv
+        │   │   └── json/<zip folder>.json
+        │   └── failed/json/<zip folder>.json    # only exists if something failed
+        └── powder/
+            └── (same structure)
+```
+
+For Raman, the zip folder names carry the quality rating (`excellent`, `fair`, `poor`, `unrated`)
+and orientation (`oriented`, `unoriented`). `LR-Raman` has neither.
+
+## Setup
+
+Python 3.8 or newer and one library:
+
+```bash
+pip install requests
+```
+
+Add this to `.gitignore`. The data is large and can be recreated:
+
+```
+data/
+pipeline.log
+```
 
 ## Usage
 
 Run from the project root (the folder that contains `util/`):
 
 ```bash
-python util/main.py            # download new zips, then split everything
-python util/main.py --clean    # also delete data/source/ if the split checks out
+python util/main.py                                      # Raman: download new zips, then split
+python util/main.py --clean                              # ...and delete data/source/raman/ if the split checks out
+python util/main.py --dataset powder --only XY_Processed.zip   # measured powder XRD, one zip
+python util/main.py --dataset infrared
 ```
 
+| Option | Meaning |
+|---|---|
+| `--dataset` | `raman` (default), `powder` or `infrared` |
+| `--only NAME.zip ...` | download only these zips |
+| `--clean` | after a verified split, delete that dataset's `data/source/<dataset>/` |
+
 The exit code is `0` if everything worked and `1` if a download or any file failed.
+
+Recommended order the first time:
+
+1. `python util/main.py`
+2. Open `data/parsed/raman/`, check the file counts, and plot a few spectra.
+3. `python util/main.py --clean` to free the disk space used by the originals.
+
+### Using the functions directly
+
+```python
+import logging
+from extract_data_rruff import sync, BASE_URL
+from process_data import split_all, clean_source
+
+if __name__ == "__main__":          # required: split_all() starts worker processes
+    logging.basicConfig(level=logging.INFO)
+    sync(BASE_URL + "powder/")      # returns the list of zip names handled this run
+    split_all("powder")             # returns {"raw": n, "processed": n, "failed": n}
+    clean_source("powder")          # returns True if the originals were deleted
+```
+
+
+### Settings
+
+| Setting | Where | Default |
+|---|---|---|
+| RRUFF base page | `BASE_URL` in `util/extract_data_rruff.py` | `https://rruff.net/zipped_data_files/` |
+| Data folders | `DATA_DIR`, `SOURCE_DIR` (extract) and `SOURCE_ROOT`, `OUT_ROOT` (process) | `data/`, `data/source/`, `data/parsed/` |
+| First CSV column name per dataset | `X_NAMES` in `util/process_data.py` | `wavenumber` (raman, infrared), `two_theta` (powder), otherwise `x` |
+
+The paths are worked out from where the scripts sit, so it does not matter where you run Python from.
 
 ## Output format
 
@@ -45,19 +133,18 @@ wavenumber,intensity
 149.1196,19625.49
 ```
 
-The first column is `wavenumber` for Raman files and `x` for anything else.
-
 ### JSON
 
-One file per source folder. Each key is a spectrum name (the same name as its CSV file),
-and the value holds every header field from the original file plus these added fields:
+One file per source folder. Each key is a spectrum name (the same name as its CSV file), and the
+value holds every header field from the original file plus these added fields:
 
 | Field | Meaning |
 |---|---|
+| `dataset` | `raman`, `powder` or `infrared` |
 | `source_folder` | Zip folder it came from, e.g. `excellent_oriented` |
-| `quality` | `excellent`, `fair`, `poor` or `unrated`; `null` for folders that do not follow that pattern (e.g. `LR-Raman`) |
+| `quality` | `excellent`, `fair`, `poor` or `unrated`; `null` for folders that do not follow that pattern |
 | `orientation` | `oriented` or `unoriented`; `null` as above |
-| `source_file` | Original path under `data/source/`, including the long id in the name |
+| `source_file` | Original path under `data/source/<dataset>/`, including the long id in the name |
 | `n_points` | Number of data rows in the CSV |
 
 ```json
@@ -67,6 +154,7 @@ and the value holds every header field from the original file plus these added f
     "RRUFFID": "R070477",
     "FILETYPE": "Raman RAW",
     "RAMAN WAVELENGTH": "785",
+    "dataset": "raman",
     "source_folder": "excellent_unoriented",
     "quality": "excellent",
     "orientation": "unoriented",
@@ -82,23 +170,24 @@ and the value holds every header field from the original file plus these added f
 import json
 import pandas as pd
 
-meta = json.load(open("data/parsed/raw/json/excellent_unoriented.json"))
+meta = json.load(open("data/parsed/raman/raw/json/excellent_unoriented.json"))
 name = "Zykaite__R070477__Raman__785__0__unoriented__Raman_Data_RAW"
-spectrum = pd.read_csv(f"data/parsed/raw/csv/excellent_unoriented/{name}.csv")
+spectrum = pd.read_csv(f"data/parsed/raman/raw/csv/excellent_unoriented/{name}.csv")
 print(meta[name]["RAMAN WAVELENGTH"], len(spectrum))
 ```
 
 ## Rules the scripts follow
 
-**Raw or processed.** A spectrum goes to `raw/` if its `FILETYPE` header contains the word
-"raw". If there is no `FILETYPE` header, a standalone uppercase `RAW` in the file name is used.
+**Raw or processed.** A spectrum goes to `raw/` if its `FILETYPE` header contains `raw` as its own
+word, including when joined with underscores (`XY_RAW`, `Raman_Data_RAW`) but not inside other words
+(Crawfordite). If there is no `FILETYPE` header, a standalone uppercase `RAW` in the file name is used.
 Everything else goes to `processed/`.
 
 **File names.** The long hex id at the end of RRUFF file names
-(`..._Raman_Data_RAW__c7ee56937fa26d4a89736f652793`) is removed from the CSV names and JSON
-keys. If removing it would give two files in the same source folder the same name, those files
-keep their full names so that neither overwrites the other (a warning is logged). The original
-name is always kept in `source_file`.
+(`..._Raman_Data_RAW__c7ee56937fa26d4a89736f652793`) is removed from the CSV names and JSON keys.
+If removing it would give two files in the same source folder the same name, those files keep their
+full names so that neither overwrites the other (a warning is logged). The original name is always
+kept in `source_file`.
 
 **Reading files.**
 - Header lines start with `##KEY=value`. An `##END=` line is optional.
@@ -107,28 +196,31 @@ name is always kept in `source_file`.
 - A file fails only if it has no usable `x y` rows at all.
 
 **Failures.** A failed file does not stop the others. It is listed with its error message in
-`data/parsed/failed/json/<source folder>.json`. That folder is cleared at the start of each
-split, so it only describes the latest run.
+`data/parsed/<dataset>/failed/json/<source folder>.json`. That folder is cleared at the start of each
+split of that dataset, so it only describes the latest run.
 
-**Cleaning.** `clean_source()` deletes the contents of `data/source/` only when every
-`.txt` has a matching CSV and nothing is listed in `failed/`. Otherwise it deletes nothing and
-logs why. It never touches `data/parsed/` or `data/.downloaded.json`.
+**Cleaning.** `clean_source(dataset)` deletes the contents of `data/source/<dataset>/` only when every
+`.txt` has a matching CSV and nothing is listed in that dataset's `failed/` folder. Otherwise it
+deletes nothing and logs why. It never touches `data/parsed/` or `data/.downloaded.json`.
 
 ## Things to know
 
-- **Downloads are all-or-nothing per zip, with no resume or retry.** If a download fails, the
-  zip is removed and tried again on the next run.
-- **Updated files on the server are not detected.** The record only stores zip names. To
-  download a zip again, remove its name from `data/.downloaded.json`.
-- **Every run re-splits everything currently in `data/source/`.** After cleaning, only newly
+- **No resume or retry on downloads.** If a download fails, the zip is removed and tried again on the
+  next run.
+- **Updated files on the server are not detected.** The record only stores zip names. To download a
+  zip again, remove its entry (`<dataset>/<name>.zip`) from `data/.downloaded.json`.
+- **Every run re-splits everything currently in `data/source/<dataset>/`.** After cleaning, only newly
   downloaded zips are processed.
-- **Rebuilding.** If the originals are still in `source/`, delete `data/parsed/` and run again.
-  If you already cleaned them, delete `data/.downloaded.json` as well so the zips are downloaded again.
-- **"RAW" in the header is not a guarantee.** Some spectra labelled `Raman RAW` are
-  already scaled (for example to a maximum of 100). Check intensity ranges before treating a
-  file as unprocessed.
-- **Raw spectra often have a large background.** Fluorescence can dominate, and point spacing
-  is not always even, so resample onto a common grid and subtract a baseline before comparing spectra.
+- **Rebuilding.** If the originals are still in `source/`, delete `data/parsed/<dataset>/` and run
+  again. If you already cleaned them, remove that dataset's entries from `data/.downloaded.json` as
+  well so the zips are downloaded again.
+- **"RAW" in the header is not a guarantee.** Some spectra labelled `Raman RAW` are already scaled
+  (for example to a maximum of 100). Check intensity ranges before treating a file as unprocessed.
+- **Raw spectra often have a large background.** Fluorescence can dominate, and point spacing is not
+  always even, so resample onto a common grid and subtract a baseline before comparing spectra.
+- **Powder and infrared files have not been checked against real downloads.** The `two_theta`
+  column name and the header-based raw/processed rule are assumptions; look at the first files you
+  get and adjust `X_NAMES` or `is_raw` if they do not fit.
 - **Do not call `split_all()` from inside a web server** (Flask, gunicorn). It starts worker
   processes and must be run from a script with the `if __name__ == "__main__":` guard.
 
@@ -136,9 +228,9 @@ logs why. It never touches `data/parsed/` or `data/.downloaded.json`.
 
 | Symptom | Check |
 |---|---|
-| `No new files` every run | Expected when nothing changed on the server. |
-| A file is in `failed/` | Open `data/parsed/failed/json/<folder>.json` for the reason. |
+| `No new files in <dataset>` every run | Expected when nothing changed on the server. |
+| A file is in `failed/` | Open `data/parsed/<dataset>/failed/json/<folder>.json` for the reason. |
 | `Not cleaning: N of M files have no CSV yet` | Run the split step first, or look for failures. |
 | `Not cleaning: failures are listed in ...` | Fix or inspect the failed files, then run the split again. |
 | `skipped N line(s) that were not an 'x y' pair` | Harmless for stray lines; a problem only if `n_points` is far too low. |
-| Download step fails | Check your internet connection and that RRUFF is reachable; the split step still runs on files already in `source/`. |
+| Download step fails | Check your internet connection and that RRUFF is reachable; the split step still runs on files already in `source/`. ||
