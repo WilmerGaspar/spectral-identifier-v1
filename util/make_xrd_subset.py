@@ -1,6 +1,6 @@
 """
 Build a small committable subset of MEASURED RRUFF powder XRD patterns of
-cubic minerals, for validating the Ramanujan-theta lattice fit.
+cubic, tetragonal and hexagonal minerals, for validating the Ramanujan-theta lattice fit.
 
 Run AFTER:
     python util/main.py --dataset powder --only XY_Processed.zip
@@ -37,6 +37,18 @@ CUBIC = {
     "Halite": "Fm-3m", "Sylvite": "Fm-3m", "Periclase": "Fm-3m",
     "Galena": "Fm-3m", "Fluorite": "Fm-3m",
 }
+# Tetragonal and hexagonal/trigonal minerals: (crystal system, lattice centering).
+# Hexagonal axes for trigonal minerals; R = rhombohedral centering.
+NONCUBIC = {
+    "Zircon": ("tetragonal", "I"), "Rutile": ("tetragonal", "P"), "Cassiterite": ("tetragonal", "P"),
+    "Anatase": ("tetragonal", "I"), "Scheelite": ("tetragonal", "I"), "Xenotime-(Y)": ("tetragonal", "I"),
+    "Chalcopyrite": ("tetragonal", "I"), "Wulfenite": ("tetragonal", "I"), "Vesuvianite": ("tetragonal", "P"),
+    "Quartz": ("hexagonal", "P"), "Beryl": ("hexagonal", "P"), "Fluorapatite": ("hexagonal", "P"),
+    "Zincite": ("hexagonal", "P"), "Nepheline": ("hexagonal", "P"),
+    "Calcite": ("hexagonal", "R"), "Corundum": ("hexagonal", "R"), "Hematite": ("hexagonal", "R"),
+    "Dolomite": ("hexagonal", "R"), "Magnesite": ("hexagonal", "R"), "Siderite": ("hexagonal", "R"),
+    "Rhodochrosite": ("hexagonal", "R"), "Smithsonite": ("hexagonal", "R"),
+}
 MAX_PER_MINERAL = 4
 
 
@@ -52,7 +64,7 @@ def main():
         for stem, m in sorted(meta.items()):
             seen_keys.update(m.keys())
             name = (m.get("NAMES") or "").strip()
-            if name not in CUBIC or per.get(name, 0) >= MAX_PER_MINERAL:
+            if (name not in CUBIC and name not in NONCUBIC) or per.get(name, 0) >= MAX_PER_MINERAL:
                 continue
             path = PARSED / "csv" / folder / f"{stem}.csv"
             if not path.exists():
@@ -67,18 +79,25 @@ def main():
             if g.max() <= 0:
                 continue
             patterns.append((g / g.max()).astype(np.float32))
-            index.append({"mineral": name, "space_group": CUBIC[name],
+            entry = {"mineral": name}
+            if name in CUBIC:
+                entry["space_group"] = CUBIC[name]
+            else:
+                entry["system"], entry["centering"] = NONCUBIC[name]
+            index.append({**entry,
                           "rruff_id": m.get("RRUFFID", ""), "stem": stem, "folder": folder,
                           "x_range": [float(x.min()), float(x.max())],
                           "header": {k: v for k, v in m.items()
                                      if "WAVELENGTH" in k.upper() or "CELL" in k.upper()}})
             per[name] = per.get(name, 0) + 1
     if not patterns:
-        raise SystemExit("No cubic minerals found in the powder data.")
+        raise SystemExit("No supported minerals found in the powder data.")
     OUT.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(OUT / "xrd_subset.npz", grid=GRID.astype(np.float32), patterns=np.stack(patterns))
     (OUT / "xrd_index.json").write_text(json.dumps(index, indent=1), encoding="utf-8")
-    print(f"{len(patterns)} measured patterns, {len({i['mineral'] for i in index})} cubic minerals "
+    n_cub = sum("space_group" in i for i in index)
+    print(f"{len(patterns)} measured patterns ({n_cub} cubic, {len(patterns) - n_cub} tetragonal/hexagonal), "
+          f"{len({i['mineral'] for i in index})} minerals "
           f"-> {OUT} ({(OUT / 'xrd_subset.npz').stat().st_size / 1024:.0f} KB)")
     print("Header fields found in the powder files (for reference):", sorted(seen_keys))
 

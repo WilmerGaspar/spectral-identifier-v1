@@ -145,20 +145,40 @@ class LatticeFit:
 def fit_lattice(peaks_2theta: Sequence[float], space_group: str,
                 a_range: Tuple[float, float], wavelength: float = CU_KA1,
                 tol_deg: float = 0.12, a_step: float = 0.0005,
-                weights: Optional[Sequence[float]] = None) -> LatticeFit:
+                weights: Optional[Sequence[float]] = None,
+                ka2: Optional[float] = None, ka2_min_split: float = 0.0) -> LatticeFit:
     """
     1. grid search over a: count measured peaks within tol of a predicted line
        (weighted by peak height), allowing a common zero shift;
     2. least-squares refinement of (a, zero shift) on the matched pairs.
+    ka2: if given (e.g. 1.5444 for Cu K-alpha2), every predicted line is also
+         predicted at this second wavelength, so K-alpha2 peaks at high angle
+         are explained instead of pulling the fit to a wrong cell.
+    ka2_min_split: predict the K-alpha2 line only where it is at least this far
+         (deg) from K-alpha1, i.e. where the doublet can be resolved.
     """
     obs = np.asarray(peaks_2theta, float)
     w = np.ones_like(obs) if weights is None else np.asarray(weights, float)
     tt_max = obs.max() + 1
-    n_max = int((2 * a_range[1] * np.sin(np.radians(tt_max / 2)) / wavelength) ** 2) + 2
-    Ns = np.array(allowed_N(space_group, n_max))
+    n_max = int((2 * a_range[1] * np.sin(np.radians(tt_max / 2)) / min(wavelength, ka2 or wavelength)) ** 2) + 2
+    Ns1 = np.array(allowed_N(space_group, n_max))
+    lam1 = np.full(len(Ns1), wavelength)
+
+    def lines_for(a):
+        if not ka2:
+            return Ns1, lam1
+        t1 = two_theta_of(Ns1, a, wavelength)
+        t2 = two_theta_of(Ns1, a, ka2)
+        res = (t2 - t1) >= ka2_min_split
+        return (np.concatenate([Ns1, Ns1[res]]),
+                np.concatenate([lam1, np.full(int(res.sum()), ka2)]))
+
+    def lines(a):
+        N_, L_ = lines_for(a)
+        return two_theta_of(N_, a, L_)
 
     def score(a):
-        calc = two_theta_of(Ns, a, wavelength)
+        calc = lines(a)
         d = obs[:, None] - calc[None, :]
         j = np.argmin(np.abs(d), axis=1)
         dd = d[np.arange(len(obs)), j]
@@ -175,23 +195,25 @@ def fit_lattice(peaks_2theta: Sequence[float], space_group: str,
 
     # refine (a, z) by Gauss-Newton on matched pairs
     for _ in range(20):
-        calc = two_theta_of(Ns, a, wavelength) + z
+        Ns, lams = lines_for(a)
+        calc = lines(a) + z
         d = obs[:, None] - calc[None, :]
         j = np.argmin(np.abs(d), axis=1)
         hit = np.abs(d[np.arange(len(obs)), j]) <= tol_deg
         if hit.sum() < 2:
             break
-        N_m, o_m = Ns[j[hit]], obs[hit]
-        f = two_theta_of(N_m, a, wavelength) + z - o_m
+        N_m, L_m, o_m = Ns[j[hit]], lams[j[hit]], obs[hit]
+        f = two_theta_of(N_m, a, L_m) + z - o_m
         da = 1e-5
-        dfda = (two_theta_of(N_m, a + da, wavelength) - two_theta_of(N_m, a, wavelength)) / da
+        dfda = (two_theta_of(N_m, a + da, L_m) - two_theta_of(N_m, a, L_m)) / da
         J = np.column_stack([dfda, np.ones_like(dfda)])
         step, *_ = np.linalg.lstsq(J, -f, rcond=None)
         a, z = a + step[0], z + step[1]
         if np.all(np.abs(step) < [1e-7, 1e-6]):
             break
 
-    calc = two_theta_of(Ns, a, wavelength) + z
+    Ns, lams = lines_for(a)
+    calc = lines(a) + z
     d = obs[:, None] - calc[None, :]
     j = np.argmin(np.abs(d), axis=1)
     dd = d[np.arange(len(obs)), j]

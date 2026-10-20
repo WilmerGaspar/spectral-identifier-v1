@@ -55,11 +55,13 @@ def main():
     grid, P = d["grid"].astype(float), d["patterns"].astype(float)
     index = json.load(open(os.path.join(DIR, "xrd_index.json"), encoding="utf-8"))
 
-    print(f"{len(P)} measured RRUFF powder patterns\n")
+    print(f"{sum(i.get('space_group') in SEARCH for i in index)} measured RRUFF powder patterns (cubic)\n")
     print(f"{'mineral':<13}{'RRUFF ID':<10}{'lambda':>8}{'a fit':>9}{'a RRUFF':>9}{'diff':>8}"
           f"{'explained':>11}{'RMS deg':>9}{'garnet guess':>14}")
     rows = []
     for y, info in zip(P, index):
+        if info.get("space_group") not in SEARCH:
+            continue            # tetragonal/hexagonal: see validate_xrd_real_uniaxial.py
         lam = first_float(header_value(info["header"], "WAVELENGTH")) or CU_KA1
         a_ref = first_float(header_value(info["header"], "CELL"))
         x0, x1 = info["x_range"]
