@@ -1,0 +1,375 @@
+# Literature for this analysis (Valency MCP Bond)
+
+## phase: Grossular
+_query: Raman spectrum of Grossular band assignment_
+
+{
+  "query": "Raman spectrum of Grossular band assignment",
+  "query_type": "semantic",
+  "confidence": "good_match",
+  "top_similarity": 0.8574,
+  "spread": 0.0125,
+  "count": 3,
+  "warnings": [],
+  "hints": [],
+  "papers": [
+    {
+      "id": "19084471",
+      "base_id": "19084471",
+      "title": "Micro-Raman spectra of ugrandite garnet.",
+      "abstract": "The natural garnets from chromite ores associated with pegmatoid pyroxenites of Sangalyk area (Uchaly ore district, southern Urals, Russia) were studied by means of micro-Raman spectroscopy. The compositions of these garnets were close to ugrandite, an isomorphous intermediate group of uvarovite-grossularite-andradite, X(3)Y(2)(SiO(4))(3), X = Ca(2+), Y = Al(3+), Fe(3+), Cr(3+), according to Raman spectra and X-ray microprobe analyses. An assignment of most of the observed bands in visible and near infrared Raman spectra is reported.",
+      "categories": [
+        "Spectrum Analysis, Raman"
+      ],
+      "datestamp": "2009-09-16",
+      "doi": "10.1016/j.saa.2008.10.024",
+      "authors": [
+        "Moroz, T",
+        "Ragozin, A",
+        "Salikhov, D",
+        "Belikova, G",
+        "Puchkov, V",
+        "Kagi, H"
+      ],
+      "source": "pubmed",
+      "semantic_score": 0.8573577284895447,
+      "bm25_score": null,
+      "title_trgm_score": null,
+      "abstract_trgm_score": null,
+      "final_score": 0.8573577284895447,
+      "dates": {
+        "first_available": {
+          "value": "2008-10-31",
+          "precision": "day",
+          "basis": "electronic_publication"
+        }
+      },
+      "relevance_score": 0.8574,
+      "match_quality": "high",
+      "citation_count": 10,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19084471/"
+    },
+    {
+      "id": "16257710",
+      "base_id": "16257710",
+      "title": "Raman spectroscopy of the mineral rhodonite.",
+      "abstract": "The mineral rhodonite an orthosilicate has been characterised by Raman spectroscopy. The Raman spectra of three rhodonites from Broken Hill, Pachapaqui and Franklin were compared and found to be similar. The spectra are characterised by an intense band at around 1000 cm(-1) assigned to the nu(1) symmetric stretching mode and three bands at 989, 974 and 936 cm(-1) assigned to the nu(3) antisymmetric stretching modes of the SiO(4) units. An intense band at around 667 cm(-1) was assigned to the nu(4) bending mode and showed additional bands exhibiting loss of degeneracy of the SiO(4) units. The low wave number region of rhodonite is complex. A strong band at 421.9 cm(-1) is attributed to the nu(2) bending mode. The spectra of the three rhodonite mineral samples are similar but subtle differences are observed. It is proposed that these differences depend upon the cationic substitution of Mn by Ca and/or Fe(2+) and Mg.",
+      "categories": [],
+      "datestamp": "2006-05-10",
+      "doi": "",
+      "authors": [
+        "Mills, Stuart J",
+        "Frost, Ray L",
+        "Kloprogge, J Theo",
+        "Weier, Matt L"
+      ],
+      "source": "pubmed",
+      "semantic_score": 0.8408397157572084,
+      "bm25_score": null,
+      "title_trgm_score": null,
+      "abstract_trgm_score": null,
+      "final_score": 0.8408397157572084,
+      "dates": {
+        "first_available": {
+          "value": "2005-01-19",
+          "precision": "day",
+          "basis": "electronic_publication"
+        }
+      },
+      "relevance_score": 0.8408,
+      "match_quality": "good",
+      "citation_count": 14,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16257710/"
+    },
+    {
+      "id": "24124910",
+      "base_id": "24124910",
+      "title": "Raman spectrum of pyrope garnet. A quantum mechanical simulation of frequencies, intensities, and isotope shifts.",
+      "abstract": "The Raman spectrum of pyrope garnet is simulated in ab initio quantum mechanical calculations, using an all-electron Gaussian-type basis set and the hybrid B3LYP functional. Frequencies calculated for the 25 Raman-active modes are in excellent agreement with the several sets of experimental data, with the mean absolute difference ranging from 4 to 8 cm(-1). Comparison of the computed and experimental spectrum shows excellent agreement for most of the intensities as well. Modes missing from experiment are shown to be characterized by low (computed) intensity. Spurious peaks in the experimental spectra are also identified. The isotopic effect has been simulated for (24)Mg \u2192 (26)Mg substitution and shows excellent agreement with shifts reported in one of the experiments. Agreement is excellent for all but one mode, which turns out to be attributed to the wrong symmetry in the experiment.",
+      "categories": [],
+      "datestamp": "2014-06-11",
+      "doi": "10.1021/jp4099446",
+      "authors": [
+        "Maschio, Lorenzo",
+        "Kirtman, Bernard",
+        "Salustro, Simone",
+        "Zicovich-Wilson, Claudio M",
+        "Orlando, Roberto",
+        "Dovesi, Roberto"
+      ],
+      "source": "pubmed",
+      "semantic_score": 0.8364805749027,
+      "bm25_score": null,
+      "title_trgm_score": null,
+      "abstract_trgm_score": null,
+      "final_score": 0.8364805749027,
+      "dates": {
+        "first_available": {
+          "value": "2013-10-31",
+          "precision": "day",
+          "basis": "electronic_publication"
+        }
+      },
+      "relevance_score": 0.8365,
+      "match_quality": "good",
+      "citation_count": 28,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24124910/"
+    }
+  ],
+  "_meta": {
+    "request_id": "e68b551bbcd445a9a2ecf7c8b61313eb",
+    "tool": "semantic_search_papers",
+    "duration_ms": 1876,
+    "server_version": "0.4.0",
+    "db_duration_ms": 1876
+  }
+}
+
+## phase: Almandine
+_query: Raman spectrum of Almandine band assignment_
+
+{
+  "query": "Raman spectrum of Almandine band assignment",
+  "query_type": "semantic",
+  "confidence": "good_match",
+  "top_similarity": 0.8585,
+  "spread": 0.0072,
+  "count": 3,
+  "warnings": [],
+  "hints": [],
+  "papers": [
+    {
+      "id": "19084471",
+      "base_id": "19084471",
+      "title": "Micro-Raman spectra of ugrandite garnet.",
+      "abstract": "The natural garnets from chromite ores associated with pegmatoid pyroxenites of Sangalyk area (Uchaly ore district, southern Urals, Russia) were studied by means of micro-Raman spectroscopy. The compositions of these garnets were close to ugrandite, an isomorphous intermediate group of uvarovite-grossularite-andradite, X(3)Y(2)(SiO(4))(3), X = Ca(2+), Y = Al(3+), Fe(3+), Cr(3+), according to Raman spectra and X-ray microprobe analyses. An assignment of most of the observed bands in visible and near infrared Raman spectra is reported.",
+      "categories": [
+        "Spectrum Analysis, Raman"
+      ],
+      "datestamp": "2009-09-16",
+      "doi": "10.1016/j.saa.2008.10.024",
+      "authors": [
+        "Moroz, T",
+        "Ragozin, A",
+        "Salikhov, D",
+        "Belikova, G",
+        "Puchkov, V",
+        "Kagi, H"
+      ],
+      "source": "pubmed",
+      "semantic_score": 0.8584965121012272,
+      "bm25_score": null,
+      "title_trgm_score": null,
+      "abstract_trgm_score": null,
+      "final_score": 0.8584965121012272,
+      "dates": {
+        "first_available": {
+          "value": "2008-10-31",
+          "precision": "day",
+          "basis": "electronic_publication"
+        }
+      },
+      "relevance_score": 0.8585,
+      "match_quality": "high",
+      "citation_count": 10,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19084471/"
+    },
+    {
+      "id": "19788292",
+      "base_id": "19788292",
+      "title": "Quantum-mechanical ab initio simulation of the Raman and IR spectra of Fe3Al2Si3O12 almandine.",
+      "abstract": "The IR and Raman spectra of the Fe(3)Al(2)Si(3)O(12) almandine garnet were simulated using the periodic CRYSTAL code with an all-electron Gaussian-type basis set and the hybrid B3LYP functional. The wavenumbers of the 25 Raman-active modes (3 of A(1g), 8 of E(g), and 14 of F(2g) symmetry) and 34 F(1u) IR-active modes (17 TO and 17 LO) were computed, as were the IR intensities. Calculated wavenumbers are in excellent agreement with the various sets of experimental results, with the mean absolute difference |Delta| being between 4 and 8 cm(-1). Graphical animation, available on the CRYSTAL Web site, provides a very comprehendible description of the movement of atoms and groups in each vibrational mode. The simulated reflectivity spectrum, obtained using a classical dispersion relation, is in excellent agreement with the measured one.",
+      "categories": [],
+      "datestamp": "2010-02-17",
+      "doi": "10.1021/jp901993e",
+      "authors": [
+        "Ferrari, A M",
+        "Valenzano, L",
+        "Meyer, A",
+        "Orlando, R",
+        "Dovesi, R"
+      ],
+      "source": "pubmed",
+      "semantic_score": 0.8533082170804996,
+      "bm25_score": null,
+      "title_trgm_score": null,
+      "abstract_trgm_score": null,
+      "final_score": 0.8533082170804996,
+      "dates": {
+        "first_available": {
+          "value": "2009-10-22",
+          "precision": "day",
+          "basis": "journal_issue"
+        }
+      },
+      "relevance_score": 0.8533,
+      "match_quality": "high",
+      "citation_count": 31,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19788292/"
+    },
+    {
+      "id": "24124910",
+      "base_id": "24124910",
+      "title": "Raman spectrum of pyrope garnet. A quantum mechanical simulation of frequencies, intensities, and isotope shifts.",
+      "abstract": "The Raman spectrum of pyrope garnet is simulated in ab initio quantum mechanical calculations, using an all-electron Gaussian-type basis set and the hybrid B3LYP functional. Frequencies calculated for the 25 Raman-active modes are in excellent agreement with the several sets of experimental data, with the mean absolute difference ranging from 4 to 8 cm(-1). Comparison of the computed and experimental spectrum shows excellent agreement for most of the intensities as well. Modes missing from experiment are shown to be characterized by low (computed) intensity. Spurious peaks in the experimental spectra are also identified. The isotopic effect has been simulated for (24)Mg \u2192 (26)Mg substitution and shows excellent agreement with shifts reported in one of the experiments. Agreement is excellent for all but one mode, which turns out to be attributed to the wrong symmetry in the experiment.",
+      "categories": [],
+      "datestamp": "2014-06-11",
+      "doi": "10.1021/jp4099446",
+      "authors": [
+        "Maschio, Lorenzo",
+        "Kirtman, Bernard",
+        "Salustro, Simone",
+        "Zicovich-Wilson, Claudio M",
+        "Orlando, Roberto",
+        "Dovesi, Roberto"
+      ],
+      "source": "pubmed",
+      "semantic_score": 0.8420945374484214,
+      "bm25_score": null,
+      "title_trgm_score": null,
+      "abstract_trgm_score": null,
+      "final_score": 0.8420945374484214,
+      "dates": {
+        "first_available": {
+          "value": "2013-10-31",
+          "precision": "day",
+          "basis": "electronic_publication"
+        }
+      },
+      "relevance_score": 0.8421,
+      "match_quality": "good",
+      "citation_count": 28,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24124910/"
+    }
+  ],
+  "_meta": {
+    "request_id": "847b853c5f4b4383aa34b2d1a97fdf0b",
+    "tool": "semantic_search_papers",
+    "duration_ms": 1006,
+    "server_version": "0.4.0",
+    "db_duration_ms": 1006
+  }
+}
+
+## unknown peak: 1008 cm-1
+_query: mineral Raman band near 1008 cm-1 assignment_
+
+{
+  "query": "mineral Raman band near 1008 cm-1 assignment",
+  "query_type": "semantic",
+  "confidence": "ambiguous_match",
+  "top_similarity": 0.82,
+  "spread": 0.003,
+  "count": 3,
+  "warnings": [
+    "Multiple similar results - top match may not be definitive",
+    "100% of results lack DOI. Use filter_papers_with_doi to restrict to papers with DOI identifiers."
+  ],
+  "hints": [],
+  "papers": [
+    {
+      "id": "15248960",
+      "base_id": "15248960",
+      "title": "Raman microscopy of selected tungstate minerals.",
+      "abstract": "A series of tungstate bearing minerals including scheelite, stolzite, ferberite, h\u00fcbnerite, wolframite, russellite, tungstenian wulfenite and cuprotungstite have been analyzed by Raman microscopy. The results of the Raman spectroscopic analysis are compared with published data. These minerals are closely related and often have related paragenesis. Raman microscopy enables the selection of individual crystals of these minerals for spectroscopic analysis even though several of the minerals can be found in the same matrix because of the pargenetic relationships between the minerals. The Raman spectra are assigned according to factor group analysis and related to the structure of the minerals. These minerals have characteristically different Raman spectra. The nu1(Ag) band is observed at 909 cm(-1) and although the corresponding nu1(Bu) vibration should be inactive a minor band is observed around 894 cm(-1). The bands at 790 and 881 cm(-1) are associated with the antisymmetric and symmetric Ag modes of terminal WO2. The band at 695 cm(-1) is interpreted as an antisymmetric bridging mode associated with the tungstate chain. The nu4(Eg) band was absent for scheelite. The bands at 353 and 401 cm(-1) are assigned as either deformation modes or as r(Bg) and delta(Ag) modes of terminal WO2. The band at 462 cm(-1) has an equivalent band in the infrared at 455 cm(-1) assigned as delta(as)(Au) of the (W2O4)n chain. The band at 508 cm(-1) is assigned as nu(sym)(Bg) of the (W2O4)n chain.",
+      "categories": [],
+      "datestamp": "2005-02-08",
+      "doi": "",
+      "authors": [
+        "Frost, Ray L",
+        "Duong, Loc",
+        "Weier, Matt"
+      ],
+      "source": "pubmed",
+      "semantic_score": 0.819959154113737,
+      "bm25_score": null,
+      "title_trgm_score": null,
+      "abstract_trgm_score": null,
+      "final_score": 0.819959154113737,
+      "dates": {
+        "first_available": {
+          "value": "2004-07",
+          "precision": "month",
+          "basis": "journal_issue"
+        }
+      },
+      "relevance_score": 0.82,
+      "match_quality": "good",
+      "citation_count": 67,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/15248960/"
+    },
+    {
+      "id": "15951228",
+      "base_id": "15951228",
+      "title": "Using Raman spectroscopy to identify mixite minerals.",
+      "abstract": "Raman spectroscopy has been used to identify whether or not a selection of minerals labelled as mixites (formula BiCu6(AsO4)3(OH)6.3H2O) are correctly marked. Of the four samples, two samples are shown to be potentially mixites because of the presence of the characteristic Raman spectra of (AsO4)3- units and (HAsO4)- units, characterised by bands at around 803 and 833 cm(-1). Two of the minerals are shown to be predominantly carbonates. Bands are observed at 3473.9 and 3470.3 cm(-1) for the two mixite samples. Bands observed in the region 880-910 cm(-1) and in the 867-870 cm(-1) region are assigned to the AsO stretching vibrations of (HAsO4)2- and (H2AsO4)- units. Whilst bands at around 803 and 833 cm(-1) are assigned to the stretching vibrations of uncomplexed (AsO4)3- units. Intense bands observed at 473.7 and 475.4 cm(-1) are assigned to the nu4 bending mode of AsO4 units. Bands observed at around 386.5, 395.3 and 423.1 cm(-1) are assigned to the nu2 bending modes of the HAsO4 (434 and 400 cm(-1)) and the AsO4 groups (324 cm(-1)). Raman spectroscopy lends itself to the identification of minerals on host matrices and is especially useful for the identification of mixites.",
+      "categories": [
+        "Spectrum Analysis, Raman"
+      ],
+      "datestamp": "2006-03-28",
+      "doi": "",
+      "authors": [
+        "Frost, Ray L",
+        "Weier, Matt",
+        "Martens, Wayde"
+      ],
+      "source": "pubmed",
+      "semantic_score": 0.8166100141814783,
+      "bm25_score": null,
+      "title_trgm_score": null,
+      "abstract_trgm_score": null,
+      "final_score": 0.8166100141814783,
+      "dates": {
+        "first_available": {
+          "value": "2005-06-13",
+          "precision": "day",
+          "basis": "electronic_publication"
+        }
+      },
+      "relevance_score": 0.8166,
+      "match_quality": "good",
+      "citation_count": 11,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/15951228/"
+    },
+    {
+      "id": "16257710",
+      "base_id": "16257710",
+      "title": "Raman spectroscopy of the mineral rhodonite.",
+      "abstract": "The mineral rhodonite an orthosilicate has been characterised by Raman spectroscopy. The Raman spectra of three rhodonites from Broken Hill, Pachapaqui and Franklin were compared and found to be similar. The spectra are characterised by an intense band at around 1000 cm(-1) assigned to the nu(1) symmetric stretching mode and three bands at 989, 974 and 936 cm(-1) assigned to the nu(3) antisymmetric stretching modes of the SiO(4) units. An intense band at around 667 cm(-1) was assigned to the nu(4) bending mode and showed additional bands exhibiting loss of degeneracy of the SiO(4) units. The low wave number region of rhodonite is complex. A strong band at 421.9 cm(-1) is attributed to the nu(2) bending mode. The spectra of the three rhodonite mineral samples are similar but subtle differences are observed. It is proposed that these differences depend upon the cationic substitution of Mn by Ca and/or Fe(2+) and Mg.",
+      "categories": [],
+      "datestamp": "2006-05-10",
+      "doi": "",
+      "authors": [
+        "Mills, Stuart J",
+        "Frost, Ray L",
+        "Kloprogge, J Theo",
+        "Weier, Matt L"
+      ],
+      "source": "pubmed",
+      "semantic_score": 0.8144179463846954,
+      "bm25_score": null,
+      "title_trgm_score": null,
+      "abstract_trgm_score": null,
+      "final_score": 0.8144179463846954,
+      "dates": {
+        "first_available": {
+          "value": "2005-01-19",
+          "precision": "day",
+          "basis": "electronic_publication"
+        }
+      },
+      "relevance_score": 0.8144,
+      "match_quality": "good",
+      "citation_count": 14,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16257710/"
+    }
+  ],
+  "_meta": {
+    "request_id": "90c9a7ac9c494d6c90f9b230d356d4b1",
+    "tool": "semantic_search_papers",
+    "duration_ms": 1030,
+    "server_version": "0.4.0",
+    "db_duration_ms": 1030
+  }
+}
+
