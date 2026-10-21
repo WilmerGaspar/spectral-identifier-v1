@@ -22,13 +22,17 @@ Usage:
     python -m src.ai.literature Zircon --json                   # structured output (for an LLM)
     python -m src.ai.literature --tools                         # what the server offers
 
-A paper is kept as evidence only if the mineral's name appears in its title or
-abstract; semantic search alone can return look-alike minerals.
+Each phase is searched two ways: semantic_search_papers (meaning) and
+search_by_abstract (exact words, finds rarer minerals). A paper is kept as
+evidence only if the mineral's name appears as a word in its title or abstract
+('zirconia' does not count as 'zircon'); semantic search alone can return
+look-alike minerals.
 """
 
 import argparse
 import json
 import os
+import re
 import sys
 from typing import Dict, List, Optional
 
@@ -37,6 +41,7 @@ import requests
 ENDPOINT = "https://mcp.valency.io/"
 PROTOCOL_VERSION = "2025-11-25"
 SEARCH_TOOL = "semantic_search_papers"
+KEYWORD_TOOL = "search_by_abstract"     # full-text search: finds rarer minerals by name
 
 
 class MCPError(RuntimeError):
@@ -119,6 +124,8 @@ def _query_args(tool: dict, query: str, limit: int) -> dict:
     preferred = [k for k in ("query", "q", "text", "search_query") if k in props]
     qkey = (preferred or [k for k in required if k in str_keys] or str_keys or ["query"])[0]
     args = {qkey: query}
+    if "include_abstract" in props:
+        args["include_abstract"] = True
     for k, v in props.items():
         if v.get("type") == "integer" and any(w in k.lower() for w in ("limit", "top", "max", "num", "k")):
             args[k] = limit
@@ -169,6 +176,7 @@ def check_papers(label: str, data: dict) -> dict:
     the mineral's name appears in its title or abstract.
     """
     stem = None if label.startswith("unknown peak") else _mineral_stem(label)
+    name_re = re.compile(rf"\b{re.escape(stem)}s?\b") if stem else None   # 'zirconia' is not 'zircon'
     papers = []
     for pp in data.get("papers", []):
         text = f"{pp.get('title', '')} {pp.get('abstract', '')}".lower()
@@ -181,7 +189,8 @@ def check_papers(label: str, data: dict) -> dict:
             "doi": pp.get("doi") or "",
             "url": pp.get("url") or "",
             "score": pp.get("relevance_score", pp.get("final_score")),
-            "mentions_phase": True if stem is None else stem in text,
+            "mentions_phase": True if stem is None else bool(name_re.search(text)),
+            "found_by": pp.get("_found_by", "semantic"),
         })
     papers.sort(key=lambda x: (not x["mentions_phase"], -(x["score"] or 0)))
     return {"label": label, "confidence": data.get("confidence", ""),
@@ -207,7 +216,8 @@ def format_report(results: List[dict], limit: int = 3) -> str:
             a = p["authors"]
             who = (a[0] + (" et al" if len(a) > 1 else "")) if a else "unknown authors"
             link = f"https://doi.org/{p['doi']}" if p["doi"] else p["url"]
-            out.append(f"  {i}. {p['title']} ({p['year']}). {who}. {link}")
+            tag = "  [name search]" if p.get("found_by") == "keyword" else ""
+            out.append(f"  {i}. {p['title']} ({p['year']}). {who}. {link}{tag}")
     return "\n".join(out)
 
 
@@ -224,7 +234,21 @@ def literature_search(phases: List[str], unknown_peaks_cm: List[float], token: s
     results = []
     for label, query in build_queries(phases, unknown_peaks_cm, topic).items():
         res = client.call(SEARCH_TOOL, _query_args(tools[SEARCH_TOOL], query, n_fetch))
-        r = check_papers(label, _parse_search(_content_text(res)))
+        data = _parse_search(_content_text(res))
+        papers = data.get("papers", [])
+        if KEYWORD_TOOL in tools and not label.startswith("unknown peak"):
+            kw = f"{_mineral_stem(label)} {'crystal structure' if topic == 'xrd' else 'Raman'}"
+            try:
+                kres = _parse_search(_content_text(
+                    client.call(KEYWORD_TOOL, _query_args(tools[KEYWORD_TOOL], kw, n_fetch))))
+                seen = {(q.get("id") or q.get("title", "").lower()) for q in papers}
+                for q in kres.get("papers", []):
+                    if (q.get("id") or q.get("title", "").lower()) not in seen:
+                        papers.append({**q, "_found_by": "keyword"})
+            except MCPError:
+                pass                               # keyword search is a bonus, not required
+        data["papers"] = papers
+        r = check_papers(label, data)
         r["query"] = query
         results.append(r)
     return results
