@@ -109,9 +109,10 @@ def _(go, mo, np, show_lines, xrd, xrd_pick):
     xrd_tab = mo.vstack([
         mo.hstack([xrd_pick, show_lines], justify="start", gap=2),
         mo.as_html(_xrd_figure(xrd, show_lines.value)),
-        mo.md("<small>**Teal lines** mark all *geometrically allowed* reflections for the fitted cell "
-              "(Ramanujan theta series). Many lines have no visible peak: space-group systematic "
-              "absences and weak intensities are not modelled.</small>"),
+        mo.md("<small>**Teal lines**: allowed reflections for the fitted cell (Ramanujan theta series; "
+              "space group conditions applied in cubic minerals, only lattice centering in "
+              "tetragonal/hexagonal). Intensities are not modelled, which is why many lines do not "
+              "have a visible peak.</small>"),
         _stats(xrd),
     ])
     return (xrd_tab,)
@@ -175,7 +176,7 @@ def _(mo, os, xrd_index, xrd_pick):
 def _(has_token, lit_go, lit_phases, lit_topic, literature, mo, os):
     if lit_go.value:
         _phases = [p.strip() for p in lit_phases.value.split(",") if p.strip()]
-        with mo.status.spinner(title="Searching 44.5 M papers with Valency MCP Bond…"):
+        with mo.status.spinner(title="Searching millions of research papers with Valency MCP Bond…"):
             _text, _mode = literature(_phases, lit_topic.value, os.environ.get("VALENCY_TOKEN", ""))
     else:
         _text, _mode = literature([], "xrd", "")
