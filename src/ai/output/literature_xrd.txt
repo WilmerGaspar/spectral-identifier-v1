@@ -1,0 +1,28 @@
+# Run by Wilmer Espinoza on Oct 20, 2026, with his own Valency token (token not stored):
+#   python -m src.ai.literature Zircon Vesuvianite Siderite --topic xrd
+# Phases chosen from the tetragonal/hexagonal XRD validation: zircon (fit OK),
+# vesuvianite (fit fails, very large cell), siderite (2 of 3 patterns explain few peaks).
+# Known limit: the name check is a word match, not reading comprehension; e.g. Zircon #3
+# is a compound "with the defect zircon structure", not the mineral itself.
+
+LITERATURE FOR THIS ANALYSIS (Valency MCP Bond)
+================================================
+
+Zircon   [Valency confidence: good_match]
+  query: Zircon crystal structure refinement unit cell X-ray diffraction
+  9 of 18 papers found mention zircon in title or abstract
+  1. Localized defects in radiation-damaged zircon (2000). Rios et al. https://pubmed.ncbi.nlm.nih.gov/11099959/
+  2. Imaging of growth banding of minerals using 2-stage sectioning: application to accessory zircon (2004). Sturm, R. https://pubmed.ncbi.nlm.nih.gov/15288646/
+  3. In situ powder X-ray diffraction, synthesis, and magnetic properties of the defect zircon structure ScVO(4-x) (2009). Shafi, Shahid P et al. https://doi.org/10.1021/ic900927j  [name search]
+
+Vesuvianite   [Valency confidence: good_match]
+  query: Vesuvianite crystal structure refinement unit cell X-ray diffraction
+  1 of 15 papers found mention vesuvianite in title or abstract
+  1. Towards a revisitation of vesuvianite-group nomenclature: the crystal structure of Ti-rich vesuvianite from Alchuri, Shigar Valley, Pakistan (2016). Aksenov, Sergey M et al. https://pubmed.ncbi.nlm.nih.gov/27698316/
+
+Siderite   [Valency confidence: ambiguous_match]
+  query: Siderite crystal structure refinement unit cell X-ray diffraction
+  11 of 18 papers found mention siderite in title or abstract
+  1. Determination of chemical composition of siderite in concretions by wavelength-dispersive X-ray spectrometry following selective dissolution (2008). Sitko, Rafał et al. https://doi.org/10.1016/j.talanta.2008.08.019
+  2. Siderite (FeCO3): Thermal Decomposition in Equilibrium with Graphite (1965). French, B M et al. https://pubmed.ncbi.nlm.nih.gov/17790821/
+  3. Morphological, Microstructural, and In Situ Chemical Characteristics of Siderite Produced by Iron-Reducing Bacteria (2024). Han, Xiaohua et al. https://doi.org/10.1021/acs.est.3c10988  [name search]
