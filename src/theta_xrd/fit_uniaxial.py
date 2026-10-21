@@ -116,14 +116,19 @@ def fit_uniaxial(peaks_2theta: Sequence[float], system: str, centering: str,
         calc = calc[calc <= tt_max]
         if calc.size == 0:
             return -1, 0.0, None
-        d = obs[:, None] - calc[None, :]
+        if z is None:
+            # estimate the zero shift from the nearest UNshifted lines
+            d0 = obs[:, None] - calc[None, :]
+            dd0 = d0[np.arange(len(obs)), np.argmin(np.abs(d0), axis=1)]
+            near = np.abs(dd0) < 3 * tol_deg
+            z = float(np.median(dd0[near])) if near.any() else 0.0
+        # then match every peak to the nearest SHIFTED line (fix, Oct 21: matching
+        # before shifting mis-assigned peaks when |z| is comparable to the line spacing)
+        d = obs[:, None] - (calc[None, :] + z)
         j = np.argmin(np.abs(d), axis=1)
         dd = d[np.arange(len(obs)), j]
-        if z is None:
-            near = np.abs(dd) < 3 * tol_deg
-            z = float(np.median(dd[near])) if near.any() else 0.0
-        hit = np.abs(dd - z) <= tol_deg
-        return float(np.sum(w[hit])) - 1e-3 * float(np.sum(np.abs(dd[hit] - z))), z, (calc, j, hit)
+        hit = np.abs(dd) <= tol_deg
+        return float(np.sum(w[hit])) - 1e-3 * float(np.sum(np.abs(dd[hit]))), z, (calc, j, hit)
 
     best = None
     for a in np.linspace(a0 * (1 - window), amax, steps):

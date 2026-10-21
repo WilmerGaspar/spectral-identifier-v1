@@ -180,11 +180,13 @@ def fit_lattice(peaks_2theta: Sequence[float], space_group: str,
     def score(a):
         calc = lines(a)
         d = obs[:, None] - calc[None, :]
-        j = np.argmin(np.abs(d), axis=1)
-        dd = d[np.arange(len(obs)), j]
+        dd = d[np.arange(len(obs)), np.argmin(np.abs(d), axis=1)]
         z = np.median(dd[np.abs(dd) < 3 * tol_deg]) if np.any(np.abs(dd) < 3 * tol_deg) else 0.0
-        hit = np.abs(dd - z) <= tol_deg
-        return float(np.sum(w[hit])) - 1e-3 * float(np.sum(np.abs(dd[hit] - z))), z
+        # match to the nearest SHIFTED line (fix, Oct 21; see fit_uniaxial.py)
+        d = obs[:, None] - (calc[None, :] + z)
+        dd = d[np.arange(len(obs)), np.argmin(np.abs(d), axis=1)]
+        hit = np.abs(dd) <= tol_deg
+        return float(np.sum(w[hit])) - 1e-3 * float(np.sum(np.abs(dd[hit]))), z
 
     best = None
     for a in np.arange(a_range[0], a_range[1] + a_step, a_step):

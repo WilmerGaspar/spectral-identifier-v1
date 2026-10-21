@@ -1,49 +1,52 @@
 43 measured RRUFF powder patterns (cubic)
 
-mineral      RRUFF ID    lambda    a fit  a RRUFF    diff  explained  RMS deg  garnet guess
-Almandine    R040076     1.5406  11.5442  11.5389  0.0053        93%    0.012     Almandine
-Almandine    R040079     1.5406  11.5400  11.5379  0.0021        89%    0.019     Almandine
-Almandine    R040168     1.5406  11.5874  11.5837  0.0037        59%    0.022   Spessartine
-Almandine    R050029     1.5406  11.5521  11.5442  0.0079        71%    0.010     Almandine
-Andradite    R040001     1.5406  12.0661  12.0630  0.0031        95%    0.014     Andradite
-Andradite    R050256     1.5406  11.9463  11.9411  0.0052        94%    0.015     Andradite
-Andradite    R050311     1.5406  11.9987  11.9779  0.0208        31%    0.046     Andradite
-Andradite    R050377     1.5406  12.0864  12.0828  0.0036        71%    0.027     Andradite
-Diamond      R050205     1.5406   3.5582   3.5640 -0.0058       100%    0.090              
-Diamond      R050206     1.5406   3.5582   3.5680 -0.0098       100%    0.090              
-Diamond      R050207     1.5406   3.5582   3.5580  0.0002       100%    0.090              
-Fluorite     R040099     1.5406   5.4646   5.4639  0.0007       100%    0.004              
-Fluorite     R050045     1.5406   5.4654   5.4645  0.0009        75%    0.007              
-Fluorite     R050046     1.5406   5.4657   5.4639  0.0018        86%    0.008              
-Fluorite     R050115     1.5406   5.4651   5.4644  0.0007        83%    0.008              
-Franklinite  R070137     1.5406   8.4638   8.4661 -0.0023        28%    0.036              
-Gahnite      R040027     1.5406   8.1002   8.0988  0.0014        75%    0.011              
-Galena       R060187     1.5406   5.9406   5.9380  0.0026        91%    0.016              
-Galena       R070325     1.5406   5.9397   5.9373  0.0024       100%    0.017              
-Grossular    R040065     1.5406  11.8566  11.8517  0.0049       100%    0.010     Grossular
-Grossular    R040066     1.5406  11.8706  11.8665  0.0041        93%    0.012     Grossular
-Grossular    R050036     1.5406  11.8866  11.8851  0.0015       100%    0.021     Grossular
-Grossular    R050081     1.5406  11.9713  11.9740 -0.0027        55%    0.053     Andradite
-Halite       R070292     1.5406   5.6440   5.6417  0.0024       100%    0.006              
-Halite       R070534     1.5406   5.6446   5.6415  0.0031       100%    0.004              
-Magnetite    R060191     1.5406   8.3948   8.3961 -0.0013         6%    0.056              
-Magnetite    R060656     1.5406   8.4180   8.4003  0.0177         8%    0.063              
-Magnetite    R080025     1.5406   8.4094   8.3995  0.0099         7%    0.030              
-Pyrope       R040159     1.5406  11.5379  11.5350  0.0029        88%    0.009     Almandine
-Pyrope       R050112     1.5406  11.5374  11.5306  0.0068        79%    0.013     Almandine
-Pyrope       R050113     1.5406  11.5742  11.5717  0.0025        87%    0.015   Spessartine
-Pyrope       R050446     1.5406  11.5443  11.5411  0.0031        88%    0.010     Almandine
-Spessartine  R050063     1.5406  11.6410  11.6359  0.0051        89%    0.014   Spessartine
-Spessartine  R060177     1.5406  11.6539  11.6505  0.0034        71%    0.020   Spessartine
-Spessartine  R060279     1.5406  11.6730  11.6798 -0.0068        25%    0.044   Spessartine
-Spessartine  R060447     1.5406  11.6248  11.6205  0.0043        94%    0.018   Spessartine
-Spinel       R050184     1.5406   8.0919   8.0898  0.0021        90%    0.010              
-Spinel       R050259     1.5406   8.0926   8.0889  0.0037        83%    0.010              
-Spinel       R050392     1.5406   8.0943   8.0911  0.0032        89%    0.008              
-Spinel       R050411     1.5406   8.0909   8.0871  0.0038       100%    0.008              
-Sylvite      R050166     1.5406   6.2950   6.2922  0.0029       100%    0.007              
-Uvarovite    R061041     1.5406  11.9459  11.9433  0.0026        86%    0.014     Andradite
+mineral      RRUFF ID    lambda    a fit  a RRUFF    diff  explained  RMS deg  garnet guess  score  flags
+Almandine    R040076     1.5406  11.5442  11.5389  0.0053        93%    0.012     Almandine   0.92  -
+Almandine    R040079     1.5406  11.5400  11.5379  0.0021        89%    0.019     Almandine   0.87  -
+Almandine    R040168     1.5406  11.5874  11.5837  0.0037        59%    0.022   Spessartine   0.54  -
+Almandine    R050029     1.5406  11.5521  11.5442  0.0079        71%    0.010     Almandine   0.68  -
+Andradite    R040001     1.5406  12.0661  12.0630  0.0031        95%    0.014     Andradite   0.95  -
+Andradite    R050256     1.5406  11.9463  11.9411  0.0052        94%    0.015     Andradite   0.94  -
+Andradite    R050311     1.5406  11.9987  11.9779  0.0208        31%    0.046     Andradite   0.66  noisy
+Andradite    R050377     1.5406  12.0864  12.0828  0.0036        71%    0.027     Andradite   0.67  -
+Diamond      R050205     1.5406   3.5582   3.5640 -0.0058       100%    0.090                 1.00  few peaks
+Diamond      R050206     1.5406   3.5582   3.5680 -0.0098       100%    0.090                 1.00  few peaks
+Diamond      R050207     1.5406   3.5582   3.5580  0.0002       100%    0.090                 1.00  few peaks
+Fluorite     R040099     1.5406   5.4646   5.4639  0.0007       100%    0.004                 1.00  -
+Fluorite     R050045     1.5406   5.4654   5.4645  0.0009        75%    0.007                 0.74  -
+Fluorite     R050046     1.5406   5.4657   5.4639  0.0018        86%    0.008                 0.85  -
+Fluorite     R050115     1.5406   5.4651   5.4644  0.0007        83%    0.008                 0.83  -
+Franklinite  R070137     1.5406   8.4638   8.4661 -0.0023        28%    0.036                 0.24  unreliable
+Gahnite      R040027     1.5406   8.1002   8.0988  0.0014        75%    0.011                 0.74  -
+Galena       R060187     1.5406   5.9406   5.9380  0.0026        91%    0.016                 0.91  -
+Galena       R070325     1.5406   5.9397   5.9373  0.0024       100%    0.017                 1.00  -
+Grossular    R040065     1.5406  11.8566  11.8517  0.0049       100%    0.010     Grossular   1.00  -
+Grossular    R040066     1.5406  11.8706  11.8665  0.0041        93%    0.012     Grossular   0.92  -
+Grossular    R050036     1.5406  11.8866  11.8851  0.0015       100%    0.021     Grossular   1.00  -
+Grossular    R050081     1.5406  11.9713  11.9740 -0.0027        55%    0.053     Andradite   0.48  unreliable
+Halite       R070292     1.5406   5.6440   5.6417  0.0024       100%    0.006                 1.00  -
+Halite       R070534     1.5406   5.6446   5.6415  0.0031       100%    0.004                 1.00  few peaks
+Magnetite    R060191     1.5406   8.3948   8.3961 -0.0013         6%    0.056                 0.68  noisy
+Magnetite    R060656     1.5406   8.4180   8.4003  0.0177         8%    0.063                 0.47  noisy, unreliable
+Magnetite    R080025     1.5406   8.4094   8.3995  0.0099         7%    0.030                 0.68  noisy
+Pyrope       R040159     1.5406  11.5379  11.5350  0.0029        88%    0.009     Almandine   0.87  -
+Pyrope       R050112     1.5406  11.5374  11.5306  0.0068        79%    0.013     Almandine   0.76  -
+Pyrope       R050113     1.5406  11.5742  11.5717  0.0025        87%    0.015   Spessartine   0.85  -
+Pyrope       R050446     1.5406  11.5443  11.5411  0.0031        88%    0.010     Almandine   0.86  -
+Spessartine  R050063     1.5406  11.6410  11.6359  0.0051        89%    0.014   Spessartine   0.88  -
+Spessartine  R060177     1.5406  11.6539  11.6505  0.0034        71%    0.020   Spessartine   0.67  -
+Spessartine  R060279     1.5406  11.6730  11.6798 -0.0068        25%    0.044   Spessartine   1.00  noisy
+Spessartine  R060447     1.5406  11.6248  11.6205  0.0043        94%    0.018   Spessartine   0.94  -
+Spinel       R050184     1.5406   8.0919   8.0898  0.0021        90%    0.010                 0.90  -
+Spinel       R050259     1.5406   8.0926   8.0889  0.0037        83%    0.010                 0.83  -
+Spinel       R050392     1.5406   8.0943   8.0911  0.0032        89%    0.008                 0.88  -
+Spinel       R050411     1.5406   8.0909   8.0871  0.0038       100%    0.008                 1.00  -
+Sylvite      R050166     1.5406   6.2950   6.2922  0.0029       100%    0.007                 1.00  -
+Uvarovite    R061041     1.5406  11.9459  11.9433  0.0026        86%    0.014     Andradite   0.84  -
 
 Summary: mean share of measured peaks explained 78%, mean RMS 0.024 deg
          |a fit - a RRUFF|: median 0.0031 A, max 0.0208 A (42 patterns with a header cell)
+
+Reliability flags (do not change the numbers above): 3 fits flagged unreliable, 5 noisy, 4 few peaks.
+         fits with |a error| > 0.01 A: 2; of these flagged unreliable: 1; flagged unreliable but error <= 0.01 A: 2
          garnets classified by fitted a: 14/20 (real garnets are solid solutions; end-member names are nominal)

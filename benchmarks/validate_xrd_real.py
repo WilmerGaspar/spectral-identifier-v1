@@ -13,6 +13,9 @@ For each measured pattern of a cubic mineral:
 Garnets are then classified by the fitted a against the Novak & Gibbs (1971)
 end-member values.
 
+Reliability flags (src/theta_xrd/quality.py, added Oct 21 after review) are
+printed next to each fit; they do not change any fitted number.
+
     python benchmarks/validate_xrd_real.py
 """
 
@@ -26,7 +29,8 @@ import numpy as np
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, ROOT)
 
-from src.theta_xrd.fit import measured_peaks, fit_lattice
+from src.theta_xrd.fit import measured_peaks, fit_lattice, allowed_N, two_theta_of
+from src.theta_xrd.quality import assess
 from src.theta_xrd.ramanujan_xrd import CU_KA1
 
 DIR = os.path.join(ROOT, "data", "rruff_xrd_subset")
@@ -57,7 +61,7 @@ def main():
 
     print(f"{sum(i.get('space_group') in SEARCH for i in index)} measured RRUFF powder patterns (cubic)\n")
     print(f"{'mineral':<13}{'RRUFF ID':<10}{'lambda':>8}{'a fit':>9}{'a RRUFF':>9}{'diff':>8}"
-          f"{'explained':>11}{'RMS deg':>9}{'garnet guess':>14}")
+          f"{'explained':>11}{'RMS deg':>9}{'garnet guess':>14}{'score':>7}  flags")
     rows = []
     for y, info in zip(P, index):
         if info.get("space_group") not in SEARCH:
@@ -74,10 +78,15 @@ def main():
                           wavelength=lam, weights=h)
         guess = (min(GARNETS, key=lambda m: abs(GARNETS[m] - fit.a)) if sg == "Ia-3d" else "")
         diff = fit.a - a_ref if a_ref else float("nan")
-        rows.append((info["mineral"], fit, a_ref, guess))
+        n_max = int((2 * SEARCH[sg][1] * np.sin(np.radians((x1 + 1) / 2)) / lam) ** 2) + 2
+        Ns = np.array(allowed_N(sg, n_max))
+        q = assess(pk, h, [fit.a], lambda p: two_theta_of(Ns, p[0], lam), fit.zero_shift,
+                   tol=0.12, x_range=(x0, x1), y=y[keep], names=("a",))
+        rows.append((info["mineral"], fit, a_ref, guess, q))
         print(f"{info['mineral']:<13}{info['rruff_id']:<10}{lam:>8.4f}{fit.a:>9.4f}"
               f"{(a_ref if a_ref else float('nan')):>9.4f}{diff:>8.4f}"
-              f"{fit.matched / fit.n_measured:>11.0%}{fit.rms_deg:>9.3f}{guess:>14}")
+              f"{fit.matched / fit.n_measured:>11.0%}{fit.rms_deg:>9.3f}{guess:>14}"
+              f"{q['score']:>7.2f}  {', '.join(q['flags']) or '-'}")
 
     if not rows:
         sys.exit("No pattern could be fitted.")
@@ -89,6 +98,13 @@ def main():
     if diffs:
         print(f"         |a fit - a RRUFF|: median {np.median(diffs):.4f} A, max {np.max(diffs):.4f} A "
               f"({len(diffs)} patterns with a header cell)")
+    unrel = [r for r in rows if "unreliable" in r[4]["flags"]]
+    big = [r for r in rows if r[2] and abs(r[1].a - r[2]) > 0.01]
+    print(f"\nReliability flags (do not change the numbers above): {len(unrel)} fits flagged unreliable, "
+          f"{sum('noisy' in r[4]['flags'] for r in rows)} noisy, {sum('few peaks' in r[4]['flags'] for r in rows)} few peaks.")
+    print(f"         fits with |a error| > 0.01 A: {len(big)}; of these flagged unreliable: "
+          f"{sum('unreliable' in r[4]['flags'] for r in big)}; "
+          f"flagged unreliable but error <= 0.01 A: {sum(r[2] and abs(r[1].a - r[2]) <= 0.01 for r in unrel)}")
     if gar:
         ok = sum(r[0] == r[3] for r in gar)
         print(f"         garnets classified by fitted a: {ok}/{len(gar)} "

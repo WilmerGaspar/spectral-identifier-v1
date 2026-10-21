@@ -10,9 +10,10 @@ Does modelling the Cu K-alpha2 line help the cubic Ramanujan-theta fit?
 Result when written (Oct 2026): on simulation, without K-alpha2 the fit fails
 (> 0.01 A) on 7/30 patterns at 0.01 deg and 1/30 at 0.02 deg; with K-alpha2
 predicted where the doublet is resolvable, 0/30. On the measured RRUFF data it
-explains more peaks (78 % -> 84 %) but does NOT improve the cell (median
-0.0031 -> 0.0033 A; 40/42 -> 38/42 within 0.01 A). The default therefore stays
-OFF (ka2=None), which is the pre-registered method; K-alpha2 is an option.
+explains more peaks (78 % -> 85 %) but does NOT improve the cell (median
+0.0031 -> 0.0033 A; 40/42 -> 37/42 within 0.01 A; numbers after the Oct 21
+zero-shift matching fix). The default therefore stays OFF (ka2=None), which is
+the pre-registered method; K-alpha2 is an option.
 """
 
 import json
