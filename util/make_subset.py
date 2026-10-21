@@ -26,7 +26,7 @@ from pathlib import Path
 import numpy as np
 
 PROJECT = Path(__file__).resolve().parent.parent
-PARSED = PROJECT / "data" / "parsed" / "processed"
+PARSED = PROJECT / "data" / "parsed" / "raman" / "processed"
 OUT = PROJECT / "data" / "rruff_subset"
 GRID = np.arange(150.0, 1500.0 + 1e-9, 2.0)
 
