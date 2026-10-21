@@ -8,10 +8,7 @@ The subset builders turn those parsed outputs into compact files for benchmarks 
 
 ## What it does
 
-```
-RRUFF server  ->  data/source/<dataset>/  ->  data/parsed/<dataset>/
-   (zips)          (unzipped .txt)             (CSV + JSON, sorted raw / processed)
-```
+![pipeline_flow](pipeline.svg)
 
 1. **Download** (`util/extract_data_rruff.py`): finds the `.zip` files listed on the RRUFF page for
    the chosen dataset, downloads the ones not downloaded before, unzips each into
