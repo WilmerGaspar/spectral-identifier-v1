@@ -176,10 +176,13 @@ def check_papers(label: str, data: dict) -> dict:
     the mineral's name appears in its title or abstract.
     """
     stem = None if label.startswith("unknown peak") else _mineral_stem(label)
-    name_re = re.compile(rf"\b{re.escape(stem)}s?\b") if stem else None   # 'zirconia' is not 'zircon'
+    # whole word ('zirconia' is not 'zircon'), and not a structure-type label
+    # ('zircon-type EuVO4' is about another compound with the zircon structure)
+    name_re = re.compile(rf"\b{re.escape(stem)}s?\b(?!-type)") if stem else None
     papers = []
     for pp in data.get("papers", []):
-        text = f"{pp.get('title', '')} {pp.get('abstract', '')}".lower()
+        title = (pp.get("title") or "").lower()
+        text = f"{title} {pp.get('abstract', '')}".lower()
         first = ((pp.get("dates") or {}).get("first_available") or {}).get("value", "")
         year = (first or pp.get("first_submitted") or pp.get("datestamp") or "")[:4]
         papers.append({
@@ -190,9 +193,13 @@ def check_papers(label: str, data: dict) -> dict:
             "url": pp.get("url") or "",
             "score": pp.get("relevance_score", pp.get("final_score")),
             "mentions_phase": True if stem is None else bool(name_re.search(text)),
+            "in_title": stem is not None and bool(name_re.search(title)),
             "found_by": pp.get("_found_by", "semantic"),
         })
-    papers.sort(key=lambda x: (not x["mentions_phase"], -(x["score"] or 0)))
+    # on-topic first; mineral named in the title first; semantic before keyword hits
+    # (their scores are on different scales); then by Valency's score
+    papers.sort(key=lambda x: (not x["mentions_phase"], not x["in_title"],
+                               x["found_by"] != "semantic", -(x["score"] or 0)))
     return {"label": label, "confidence": data.get("confidence", ""),
             "warnings": data.get("warnings", []), "n_searched": len(papers),
             "papers": papers}

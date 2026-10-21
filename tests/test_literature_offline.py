@@ -62,6 +62,14 @@ def test_zirconia_is_not_zircon():
     assert not any(p["mentions_phase"] for p in res[0]["papers"])
 
 
+def test_structure_type_label_is_not_the_mineral():
+    data = {"papers": [{"title": "High-pressure study of zircon-type EuVO4", "abstract": ""},
+                       {"title": "Localized defects in radiation-damaged zircon", "abstract": ""}]}
+    r = L.check_papers("Zircon", data)
+    assert [p["mentions_phase"] for p in r["papers"]] == [True, False]
+    assert r["papers"][0]["title"].startswith("Localized")
+
+
 def test_mineral_stem():
     assert L._mineral_stem("Xenotime-(Y)") == "xenotime"
 
@@ -71,5 +79,6 @@ if __name__ == "__main__":
     test_no_hits_means_nothing_cited()
     test_keyword_search_finds_rare_mineral()
     test_zirconia_is_not_zircon()
+    test_structure_type_label_is_not_the_mineral()
     test_mineral_stem()
     print("ok")
