@@ -308,6 +308,21 @@ Research interests:
 
 ---
 
+## Demo app (marimo)
+
+```bash
+pip install marimo plotly
+marimo run app/app.py
+```
+
+Opens at `http://localhost:2718`. Three tabs:
+
+- **X-ray · Ramanujan theta** — pick any of the 111 RRUFF powder patterns; toggle the Ramanujan-theta lines on/off to see the predicted allowed reflections overlaid on the measured data; shows fitted cell parameters (a, c), error vs RRUFF reference, reliability flags, and closest garnet end-member where applicable.
+- **Raman · identification** — pick a RRUFF sample; the cosine-similarity matcher returns the top-5 minerals (leave-one-sample-out; the query sample is never in the library).
+- **Literature · Valency** — searches 44.5 M papers via the Valency MCP Bond API (`export VALENCY_TOKEN=...` before running); falls back to a saved example run if no token is set.
+
+---
+
 ## License
 
 License to be defined.
