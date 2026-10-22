@@ -27,7 +27,7 @@ Success criteria fixed before running: median cell error < 0.01 Å and ≥ 70 % 
 | Reliability flags | 1 of 68 non-cubic fits flagged unreliable (hematite R060190, the one large failure), no false alarms; cubic: 1 of 2 large errors caught, 2 false alarms | same scripts |
 | Theta series vs brute-force (h, k, l) counting | Identical for P, I, F cubic, N ≤ 200 | `benchmarks/validate_theta_xrd.py` |
 
-A review by Pushpender Kumar led us to a bug (peaks matched to lines before the zero shift was applied). Fixing it turned vesuvianite from 4/4 failures into 4/4 fits within 0.007 Å. The pre-registered run also met the criteria and is kept in `benchmarks/output/validate_xrd_real_uniaxial_before_fix.txt`.
+A review led us to a bug (peaks matched to lines before the zero shift was applied). Fixing it turned vesuvianite from 4/4 failures into 4/4 fits within 0.007 Å. The pre-registered run also met the criteria and is kept in `benchmarks/output/validate_xrd_real_uniaxial_before_fix.txt`.
 
 ## Reproduce
 
@@ -54,8 +54,6 @@ Demo app tabs:
 - Lattice theta series are classical (Wang & Torquato, [Phys. Rev. Research 2024](https://arxiv.org/abs/2502.02819)). Our contribution is using Ramanujan's φ, ψ and Borwein's a(q) as an exact line generator inside an AI pipeline validated on measured data.
 - Space-group absences are applied for cubic minerals only; X-ray mixtures and the X-ray unknown-phase test are still simulated.
 - Claude (Anthropic) was used as a coding assistant.
-
-**Acknowledgments:** Pushpender Kumar (India), whose review of the fit led us to find and fix the zero-shift bug.
 
 ---
 
