@@ -2,7 +2,7 @@
 
 **Identify minerals from real Raman and X-ray measurements, using Ramanujan theta functions, with a fit that tells you when not to trust it.**
 
-OSI Hackathon 2026 · Team: Wilmer Gaspar Espinoza (Honduras), Adewunmi Olaniyi (Nigeria), Eugenio Bustamante (Ireland)
+OSI Hackathon 2026 · Team: Wilmer Gaspar Espinoza (Honduras), Adewunmi Olaniyi (Nigeria), Pushpender Kumar (India), Eugenio Bustamante (Ireland)
 
 ![Ramanujan-theta cell refinement on 110 measured RRUFF patterns](docs/xrd_all_minerals.png)
 
@@ -371,7 +371,7 @@ Research interests:
 
 ## License
 
-License to be defined.
+MIT License — see [LICENSE](LICENSE).
 
 ---
 
