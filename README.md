@@ -2,7 +2,7 @@
 
 **Identify minerals from real Raman and X-ray measurements, using Ramanujan theta functions, with a fit that tells you when not to trust it.**
 
-OSI Hackathon 2026 · Team: Wilmer Gaspar Espinoza (Honduras), Adewunmi Olaniyi (Nigeria), Pushpender Kumar (India), Eugenio Bustamante (Ireland)
+OSI Hackathon 2026 · Team: Wilmer Gaspar Espinoza (Honduras), Adewunmi Olaniyi (Nigeria), Eugenio Bustamante (Ireland)
 
 ![Ramanujan-theta cell refinement on 110 measured RRUFF patterns](docs/xrd_all_minerals.png)
 
@@ -27,7 +27,7 @@ Success criteria fixed before running: median cell error < 0.01 Å and ≥ 70 % 
 | Reliability flags | 1 of 68 non-cubic fits flagged unreliable (hematite R060190, the one large failure), no false alarms; cubic: 1 of 2 large errors caught, 2 false alarms | same scripts |
 | Theta series vs brute-force (h, k, l) counting | Identical for P, I, F cubic, N ≤ 200 | `benchmarks/validate_theta_xrd.py` |
 
-A teammate's review found a bug (peaks matched to lines before the zero shift was applied). Fixing it turned vesuvianite from 4/4 failures into 4/4 fits within 0.007 Å. The pre-registered run also met the criteria and is kept in `benchmarks/output/validate_xrd_real_uniaxial_before_fix.txt`.
+A review found a bug (peaks matched to lines before the zero shift was applied). Fixing it turned vesuvianite from 4/4 failures into 4/4 fits within 0.007 Å. The pre-registered run also met the criteria and is kept in `benchmarks/output/validate_xrd_real_uniaxial_before_fix.txt`.
 
 ## Reproduce
 
